@@ -1,5 +1,7 @@
 package com.deizon.system_barbershop.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
