@@ -51,18 +51,10 @@ public class ClienteService {
 
 
    public void updateDataResource(Cliente oldCliente, ClienteDTO newCliente) {
-       if (oldCliente.getNome().isBlank()) {
-           oldCliente.setNome(newCliente.getNome());
-       }
-       if (oldCliente.getCpf().isBlank()) {
-           oldCliente.setCpf(newCliente.getCpf());
-       }
-       if (oldCliente.getTelefone().isBlank()) {
-           oldCliente.setTelefone(newCliente.getTelefone());
-       }
-       if (oldCliente.getEmail().isBlank()) {
-           oldCliente.setEmail(newCliente.getEmail());
-       }
+       oldCliente.setNome(newCliente.getNome());
+       oldCliente.setCpf(newCliente.getCpf());
+       oldCliente.setTelefone(newCliente.getTelefone());
+       oldCliente.setEmail(newCliente.getEmail());
    }
 
 }
