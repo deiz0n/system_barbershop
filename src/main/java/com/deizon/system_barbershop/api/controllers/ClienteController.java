@@ -1,13 +1,11 @@
 package com.deizon.system_barbershop.api.controllers;
 
-import com.deizon.system_barbershop.domain.models.Cliente;
+import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.services.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +18,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAllClientes() {
+    public ResponseEntity<List<ClienteDTO>> getAllClientes() {
         var clientes = clienteService.findAll();
         return ResponseEntity.ok().body(clientes);
     }
@@ -33,5 +31,25 @@ public class ClienteController {
         }
         return ResponseEntity.status(404).build();
     }
+
+    @PostMapping
+    public ResponseEntity<?> addCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
+        var cliente = clienteService.addResource(clienteDTO);
+        return ResponseEntity.ok().body(cliente);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCliente(@PathVariable UUID id) {
+        clienteService.remResource(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCliente(@PathVariable UUID id,
+                                           @RequestBody @Valid ClienteDTO clienteDTO) {
+        var cliente = clienteService.updateResource(id, clienteDTO);
+        return ResponseEntity.ok().body(cliente);
+    }
+
 
 }
