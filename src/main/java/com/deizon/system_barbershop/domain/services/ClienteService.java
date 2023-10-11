@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class ClienteService {
+public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -20,41 +20,45 @@ public class ClienteService {
     @Autowired
     private ClienteDTOMapper clienteDTOMapper;
 
+    @Override
     public List<ClienteDTO> findAll() {
-       return clienteRepository.findAll()
-               .stream()
-               .map(clienteDTOMapper)
-               .collect(Collectors.toList());
+        return clienteRepository.findAll()
+                .stream()
+                .map(clienteDTOMapper)
+                .collect(Collectors.toList());
     }
 
+    @Override
     public ClienteDTO findByID(UUID id) {
         var cliente = clienteRepository.findById(id)
                 .map(clienteDTOMapper);
         return cliente.get();
     }
 
-   public Cliente addResource(ClienteDTO clienteDTO) {
+    @Override
+    public Cliente addResource(ClienteDTO clienteDTO) {
         var cliente = new Cliente();
         BeanUtils.copyProperties(clienteDTO, cliente, "id");
         return clienteRepository.save(cliente);
-   }
+    }
 
-   public void remResource(UUID id) {
+    @Override
+    public void remResource(UUID id) {
         clienteRepository.deleteById(id);
-   }
+    }
 
-   public Cliente updateResource(UUID id, ClienteDTO newCliente) {
+    @Override
+    public Cliente updateResource(UUID id, ClienteDTO newCliente) {
         var oldCliente = clienteRepository.getReferenceById(id);
         updateDataResource(oldCliente, newCliente);
         return clienteRepository.save(oldCliente);
-   }
+    }
 
-
-   public void updateDataResource(Cliente oldCliente, ClienteDTO newCliente) {
-       oldCliente.setNome(newCliente.getNome());
-       oldCliente.setCpf(newCliente.getCpf());
-       oldCliente.setTelefone(newCliente.getTelefone());
-       oldCliente.setEmail(newCliente.getEmail());
-   }
-
+    @Override
+    public void updateDataResource(Cliente oldResource, ClienteDTO newResource) {
+        oldResource.setNome(newResource.getNome());
+        oldResource.setCpf(newResource.getCpf());
+        oldResource.setTelefone(newResource.getTelefone());
+        oldResource.setEmail(newResource.getEmail());
+    }
 }
