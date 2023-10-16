@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class HorarioService {
+public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
 
     @Autowired
     private HorarioRepository horarioRepository;
@@ -20,6 +20,7 @@ public class HorarioService {
     @Autowired
     private HorarioDTOMapper horarioDTOMapper;
 
+    @Override
     public List<HorarioDTO> findAll() {
         var horarios = horarioRepository.findAll()
                 .stream()
@@ -28,32 +29,36 @@ public class HorarioService {
         return horarios;
     }
 
+    @Override
     public HorarioDTO findByID(UUID id) {
         var horario = horarioRepository.findById(id)
                 .map(horarioDTOMapper);
         return horario.get();
     }
 
+    @Override
     public Horario addResource(HorarioDTO horarioDTO) {
         var horario = new Horario();
         BeanUtils.copyProperties(horarioDTO, horario);
         return horarioRepository.save(horario);
     }
 
+    @Override
     public void remResource(UUID id) {
         horarioRepository.deleteById(id);
     }
 
+    @Override
     public Horario updateResource(UUID id, HorarioDTO newHorario) {
         var oldHorario = horarioRepository.getReferenceById(id);
-        updateResourceData(oldHorario, newHorario);
+        updateDataResource(oldHorario, newHorario);
         BeanUtils.copyProperties(newHorario, oldHorario);
         return horarioRepository.save(oldHorario);
     }
 
-    public void updateResourceData(Horario oldHorario, HorarioDTO newHorario) {
-        oldHorario.setHorarioInicial(newHorario.getHorarioInicial());
-        oldHorario.setHorarioFinal(newHorario.getHorarioFinal());
+    @Override
+    public void updateDataResource(Horario oldResource, HorarioDTO newResource) {
+        oldResource.setHorarioInicial(newResource.getHorarioInicial());
+        oldResource.setHorarioFinal(newResource.getHorarioFinal());
     }
-
 }
