@@ -26,10 +26,7 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getCliente(@PathVariable UUID id) {
         var cliente = clienteService.findByID(id);
-        if (cliente != null) {
-            return ResponseEntity.ok().body(cliente);
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.ok().body(cliente);
     }
 
     @PostMapping

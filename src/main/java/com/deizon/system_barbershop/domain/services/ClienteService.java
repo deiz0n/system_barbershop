@@ -3,8 +3,11 @@ package com.deizon.system_barbershop.domain.services;
 import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
+import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +17,16 @@ import java.util.stream.Collectors;
 @Service
 public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
 
-    @Autowired
+
     private ClienteRepository clienteRepository;
 
-    @Autowired
     private ClienteDTOMapper clienteDTOMapper;
+
+    @Autowired
+    public ClienteService(ClienteRepository clienteRepository, ClienteDTOMapper clienteDTOMapper) {
+        this.clienteRepository = clienteRepository;
+        this.clienteDTOMapper = clienteDTOMapper;
+    }
 
     @Override
     public List<ClienteDTO> findAll() {
@@ -32,7 +40,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     public ClienteDTO findByID(UUID id) {
         var cliente = clienteRepository.findById(id)
                 .map(clienteDTOMapper);
-        return cliente.get();
+        return cliente.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     @Override
@@ -44,14 +52,22 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
 
     @Override
     public void remResource(UUID id) {
-        clienteRepository.deleteById(id);
+        var cliente = clienteRepository.findById(id);
+        if (cliente.isPresent()) {
+            clienteRepository.delete(cliente.get());
+        }
+        throw new ResourceNotFoundException(id);
     }
 
     @Override
     public Cliente updateResource(UUID id, ClienteDTO newCliente) {
         var oldCliente = clienteRepository.getReferenceById(id);
-        updateDataResource(oldCliente, newCliente);
-        return clienteRepository.save(oldCliente);
+        try {
+            updateDataResource(oldCliente, newCliente);
+            return clienteRepository.save(oldCliente);
+        } catch (EntityNotFoundException error) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.deizon.system_barbershop.domain.services;
 import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
+import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
 
-    @Autowired
     private HorarioRepository horarioRepository;
 
-    @Autowired
     private HorarioDTOMapper horarioDTOMapper;
+
+    @Autowired
+    public HorarioService(HorarioRepository horarioRepository, HorarioDTOMapper horarioDTOMapper) {
+        this.horarioRepository = horarioRepository;
+        this.horarioDTOMapper = horarioDTOMapper;
+    }
 
     @Override
     public List<HorarioDTO> findAll() {
@@ -33,7 +39,7 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     public HorarioDTO findByID(UUID id) {
         var horario = horarioRepository.findById(id)
                 .map(horarioDTOMapper);
-        return horario.get();
+        return horario.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     @Override
@@ -45,15 +51,23 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
 
     @Override
     public void remResource(UUID id) {
-        horarioRepository.deleteById(id);
+        var horario = horarioRepository.findById(id);
+        if (horario.isPresent()) {
+            horarioRepository.delete(horario.get());
+        }
+        throw new ResourceNotFoundException(id);
     }
 
     @Override
     public Horario updateResource(UUID id, HorarioDTO newHorario) {
         var oldHorario = horarioRepository.getReferenceById(id);
-        updateDataResource(oldHorario, newHorario);
-        BeanUtils.copyProperties(newHorario, oldHorario);
-        return horarioRepository.save(oldHorario);
+        try {
+            updateDataResource(oldHorario, newHorario);
+            //BeanUtils.copyProperties(newHorario, oldHorario);
+            return horarioRepository.save(oldHorario);
+        } catch (EntityNotFoundException error) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     @Override
