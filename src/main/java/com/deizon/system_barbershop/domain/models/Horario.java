@@ -25,4 +25,10 @@ public class Horario {
     private LocalDateTime horarioInicial;
     private LocalDateTime horarioFinal;
 
+    @ManyToOne
+    private Barbearia barbearia;
+
+    @OneToOne
+    private Reserva reserva;
+
 }

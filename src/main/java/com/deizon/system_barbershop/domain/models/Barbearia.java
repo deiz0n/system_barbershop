@@ -13,11 +13,16 @@ import java.util.UUID;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "tb_barbearia")
 public class Barbearia {
 
+    @Id
     @EqualsAndHashCode.Include
     private UUID id;
     private String nome;
     private String cnpj;
+
+    @OneToMany(mappedBy = "barbearia")
+    private List<Horario> horarios;
 
 }
