@@ -1,0 +1,60 @@
+package com.deizon.system_barbershop.api.controllers;
+
+import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
+import com.deizon.system_barbershop.domain.services.BarbeariaService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/barbearias")
+public class BarbeariaController {
+
+    private BarbeariaService barbeariaService;
+
+    @Autowired
+    public BarbeariaController(BarbeariaService barbeariaService) {
+        this.barbeariaService = barbeariaService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<BarbeariaDTO>> getBarbearias() {
+        var barbearias = barbeariaService.findAll();
+        return ResponseEntity.ok().body(barbearias);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BarbeariaDTO> getBarbearia(@PathVariable UUID id) {
+        var barbearia = barbeariaService.findByID(id);
+        return ResponseEntity.ok().body(barbearia);
+    }
+
+    @Transactional
+    @PostMapping
+    public ResponseEntity<?> createBarbearia(@RequestBody @Valid BarbeariaDTO newBarbearia) {
+        var barbearia = barbeariaService.addResource(newBarbearia);
+        return ResponseEntity.status(HttpStatus.CREATED).body(barbearia);
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBarbearia(@PathVariable UUID id) {
+        barbeariaService.remResource(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateBarbearia(@PathVariable UUID id,
+                                             @RequestBody @Valid BarbeariaDTO newBarbearia) {
+        var barbearia = barbeariaService.updateResource(id, newBarbearia);
+        return ResponseEntity.ok().body(barbearia);
+    }
+
+}

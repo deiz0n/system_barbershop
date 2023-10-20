@@ -1,5 +1,6 @@
 package com.deizon.system_barbershop.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,11 +18,13 @@ import java.util.UUID;
 public class Barbearia {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
     private UUID id;
     private String nome;
     private String cnpj;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "barbearia")
     private List<Horario> horarios;
 

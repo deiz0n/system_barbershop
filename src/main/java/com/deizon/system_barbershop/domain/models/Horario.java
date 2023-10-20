@@ -26,6 +26,7 @@ public class Horario {
     private Instant horarioInicial;
     private Instant horarioFinal;
 
+    @JsonIgnore
     @ManyToOne
     private Barbearia barbearia;
 
