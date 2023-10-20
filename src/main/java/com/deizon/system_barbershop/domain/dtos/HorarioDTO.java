@@ -1,11 +1,14 @@
 package com.deizon.system_barbershop.domain.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Data
@@ -16,7 +19,9 @@ public class HorarioDTO {
 
     @EqualsAndHashCode.Include
     private UUID id;
-    private LocalDateTime horarioInicial;
-    private LocalDateTime horarioFinal;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "UTC")
+    private Instant horarioInicial;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "UTC")
+    private Instant horarioFinal;
 
 }

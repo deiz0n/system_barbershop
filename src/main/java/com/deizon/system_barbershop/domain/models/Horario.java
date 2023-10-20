@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,8 +23,8 @@ public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private LocalDateTime horarioInicial;
-    private LocalDateTime horarioFinal;
+    private Instant horarioInicial;
+    private Instant horarioFinal;
 
     @ManyToOne
     private Barbearia barbearia;
