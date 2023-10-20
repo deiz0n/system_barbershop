@@ -24,7 +24,7 @@ public class Barbearia {
     private String nome;
     private String cnpj;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "barbearia")
     private List<Horario> horarios;
 

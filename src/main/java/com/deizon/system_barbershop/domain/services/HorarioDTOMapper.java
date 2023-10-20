@@ -15,7 +15,7 @@ public class HorarioDTOMapper implements Function<Horario, HorarioDTO> {
                 horario.getId(),
                 horario.getHorarioInicial(),
                 horario.getHorarioFinal(),
-                horario.getBarbearia()
+                horario.getReserva()
         );
     }
 }

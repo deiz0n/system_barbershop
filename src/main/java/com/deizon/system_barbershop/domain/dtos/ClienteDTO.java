@@ -1,5 +1,6 @@
 package com.deizon.system_barbershop.domain.dtos;
 
+import com.deizon.system_barbershop.domain.models.Reserva;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -30,5 +32,6 @@ public class ClienteDTO {
     @Email(message = "E-mail inválido. Tente novamente!")
     @NotBlank(message = "Esse campo não pode ficar em branco")
     private String email;
+    private List<Reserva> reservas;
 
 }
