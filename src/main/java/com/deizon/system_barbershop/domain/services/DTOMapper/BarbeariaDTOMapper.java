@@ -1,4 +1,4 @@
-package com.deizon.system_barbershop.domain.services;
+package com.deizon.system_barbershop.domain.services.DTOMapper;
 
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;

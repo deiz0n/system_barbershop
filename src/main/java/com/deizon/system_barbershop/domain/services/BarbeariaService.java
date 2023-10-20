@@ -3,11 +3,11 @@ package com.deizon.system_barbershop.domain.services;
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
+import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
