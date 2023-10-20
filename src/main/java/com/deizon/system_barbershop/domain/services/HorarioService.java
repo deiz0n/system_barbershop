@@ -45,7 +45,7 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     @Override
     public Horario addResource(HorarioDTO horarioDTO) {
         var horario = new Horario();
-        BeanUtils.copyProperties(horarioDTO, horario);
+        BeanUtils.copyProperties(horarioDTO, horario, "");
         return horarioRepository.save(horario);
     }
 

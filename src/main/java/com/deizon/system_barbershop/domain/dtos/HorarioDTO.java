@@ -1,6 +1,8 @@
 package com.deizon.system_barbershop.domain.dtos;
 
+import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,5 +25,6 @@ public class HorarioDTO {
     private Instant horarioInicial;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "UTC")
     private Instant horarioFinal;
+    private Barbearia barbearia;
 
 }

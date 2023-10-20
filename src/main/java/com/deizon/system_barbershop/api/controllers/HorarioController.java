@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,18 +31,21 @@ public class HorarioController {
         return ResponseEntity.ok().body(horario);
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<?> createHorario(@RequestBody @Valid HorarioDTO newHorario) {
         var horario = horarioService.addResource(newHorario);
         return ResponseEntity.status(HttpStatus.CREATED).body(horario);
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHorario(@PathVariable UUID id) {
         horarioService.remResource(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHorario(@PathVariable UUID id,
                                            @RequestBody @Valid HorarioDTO newHorario) {

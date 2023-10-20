@@ -29,6 +29,7 @@ public class Horario {
     @ManyToOne
     private Barbearia barbearia;
 
+    @JsonIgnore
     @OneToOne
     private Reserva reserva;
 
