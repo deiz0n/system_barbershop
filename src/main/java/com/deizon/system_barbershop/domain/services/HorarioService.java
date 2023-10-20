@@ -54,8 +54,9 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
         var horario = horarioRepository.findById(id);
         if (horario.isPresent()) {
             horarioRepository.delete(horario.get());
+        } else {
+            throw new ResourceNotFoundException(id);
         }
-        throw new ResourceNotFoundException(id);
     }
 
     @Override

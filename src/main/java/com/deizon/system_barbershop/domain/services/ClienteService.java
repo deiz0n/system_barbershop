@@ -55,8 +55,9 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
         var cliente = clienteRepository.findById(id);
         if (cliente.isPresent()) {
             clienteRepository.delete(cliente.get());
+        } else {
+            throw new ResourceNotFoundException(id);
         }
-        throw new ResourceNotFoundException(id);
     }
 
     @Override
