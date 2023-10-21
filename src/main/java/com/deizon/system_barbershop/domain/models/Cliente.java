@@ -1,5 +1,6 @@
 package com.deizon.system_barbershop.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Cliente {
     private String telefone;
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Reserva> reservas;
 

@@ -35,7 +35,7 @@ public class ReservaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createReserva(@RequestBody @PathVariable ReservaDTO newReserva) {
+    public ResponseEntity<?> createReserva(@RequestBody @Valid ReservaDTO newReserva) {
         var reserva = reservaService.addResource(newReserva);
         return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
     }
