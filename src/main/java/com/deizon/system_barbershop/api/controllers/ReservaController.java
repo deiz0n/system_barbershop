@@ -2,6 +2,7 @@ package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
 import com.deizon.system_barbershop.domain.services.ReservaService;
+import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,8 +37,12 @@ public class ReservaController {
 
     @PostMapping
     public ResponseEntity<?> createReserva(@RequestBody @Valid ReservaDTO newReserva) {
-        var reserva = reservaService.addResource(newReserva);
-        return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
+        try {
+            var reserva = reservaService.addResource(newReserva);
+            return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
+        } catch (ExistingFieldException error) {
+            return ResponseEntity.badRequest().body("O horário informado já está cadastrado em outra reserva.");
+        }
     }
 
     @DeleteMapping("/{id}")

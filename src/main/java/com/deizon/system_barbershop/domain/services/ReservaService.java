@@ -4,12 +4,15 @@ import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
 import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ReservaDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,9 +48,13 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
 
     @Override
     public Reserva addResource(ReservaDTO reservaDTO) {
-        var reserva = new Reserva();
-        BeanUtils.copyProperties(reservaDTO, reserva);
-        return reservaRepository.save(reserva);
+        try {
+            var reserva = new Reserva();
+            BeanUtils.copyProperties(reservaDTO, reserva);
+            return reservaRepository.save(reserva);
+        } catch (DataIntegrityViolationException error) {
+            throw new ExistingFieldException("O horário já está cadastrado em outra reserva.");
+        }
     }
 
     @Override

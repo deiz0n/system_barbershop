@@ -34,8 +34,8 @@ public class ClienteController {
     @Transactional
     @PostMapping
     public ResponseEntity<?> createCliente(@RequestBody @Valid ClienteDTO newCliente) {
-        var cliente = clienteService.addResource(newCliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+        clienteService.addResource(newCliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
     }
 
     @Transactional
@@ -52,6 +52,4 @@ public class ClienteController {
         var cliente = clienteService.updateResource(id, newCliente);
         return ResponseEntity.ok().body(cliente);
     }
-
-
 }
