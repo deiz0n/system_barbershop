@@ -26,6 +26,6 @@ public class HorarioDTO {
     private Instant horarioInicial;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     private Instant horarioFinal;
-    private Reserva reserva;
+
 
 }

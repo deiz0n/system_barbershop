@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.domain.dtos;
 
 import com.deizon.system_barbershop.domain.models.Horario;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +25,6 @@ public class BarbeariaDTO {
     @CNPJ(message = "CNPJ inválido. Tente novamente")
     @NotBlank(message = "Esse campo não pode ficar em branco")
     private String cnpj;
+    @JsonUnwrapped
     private List<Horario> horarios;
 }
