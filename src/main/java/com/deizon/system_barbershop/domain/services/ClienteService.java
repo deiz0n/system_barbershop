@@ -4,6 +4,7 @@ import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ClienteDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -45,9 +46,17 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
 
     @Override
     public Cliente addResource(ClienteDTO clienteDTO) {
-        var cliente = new Cliente();
-        BeanUtils.copyProperties(clienteDTO, cliente, "id");
-        return clienteRepository.save(cliente);
+        if (clienteRepository.existsCpf().contains(clienteDTO.getCpf())) {
+            throw new ExistingFieldException("CPF já cadastrado");
+        } else if (clienteRepository.existsEmail().contains(clienteDTO.getEmail())) {
+            throw new ExistingFieldException("Email já cadastrado");
+        } else if (clienteRepository.existsTelefone().contains(clienteDTO.getTelefone())) {
+            throw new ExistingFieldException("Telefone já cadastrado");
+        } else {
+            var cliente = new Cliente();
+            BeanUtils.copyProperties(clienteDTO, cliente, "id");
+            return clienteRepository.save(cliente);
+        }
     }
 
     @Override

@@ -25,4 +25,15 @@ public class ExceptionHandlingController {
         return ResponseEntity.status(404).body(error);
     }
 
+    @ExceptionHandler(ExistingFieldException.class)
+    public ResponseEntity<?> existingField(ExistingFieldException exception, WebRequest request) {
+        var error = new Error(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage(),
+                request.getDescription(false)
+        );
+        return ResponseEntity.status(400).body(error);
+    }
+
 }

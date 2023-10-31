@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface BarbeariaRepository extends JpaRepository<Barbearia, UUID> {
 
-    @Query("FROM tb_barbearia r left join fetch r.horarios")
+    @Query("FROM tb_barbearia r LEFT JOIN FETCH r.horarios")
     List<Barbearia> findAll();
 }

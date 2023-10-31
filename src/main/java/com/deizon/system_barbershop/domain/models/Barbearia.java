@@ -24,7 +24,6 @@ public class Barbearia {
     private String nome;
     private String cnpj;
 
-
     @OneToMany(mappedBy = "barbearia")
     private List<Horario> horarios;
 

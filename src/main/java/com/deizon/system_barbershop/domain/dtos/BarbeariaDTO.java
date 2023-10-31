@@ -25,6 +25,5 @@ public class BarbeariaDTO {
     @CNPJ(message = "CNPJ inválido. Tente novamente")
     @NotBlank(message = "Esse campo não pode ficar em branco")
     private String cnpj;
-    @JsonUnwrapped
     private List<Horario> horarios;
 }

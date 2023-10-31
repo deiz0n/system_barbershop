@@ -22,10 +22,7 @@ public class HorarioDTO {
 
     @EqualsAndHashCode.Include
     private UUID id;
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     private Instant horarioInicial;
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     private Instant horarioFinal;
-
 
 }

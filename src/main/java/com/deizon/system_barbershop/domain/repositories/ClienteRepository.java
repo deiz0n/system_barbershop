@@ -12,4 +12,14 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
     @Query("FROM tb_cliente c LEFT JOIN FETCH c.reservas")
     List<Cliente> findAll();
+
+    @Query("SELECT c.cpf FROM tb_cliente c")
+    List<String> existsCpf();
+
+    @Query("SELECT c.telefone FROM tb_cliente c")
+    List<String> existsTelefone();
+
+    @Query("SELECT c.email FROM tb_cliente c")
+    List<String> existsEmail();
+
 }
