@@ -4,12 +4,17 @@ import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ClienteDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.ArgumentNotValidException;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.UUID;

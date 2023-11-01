@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.domain.dtos;
 
 import com.deizon.system_barbershop.domain.models.Reserva;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,7 +28,7 @@ public class ClienteDTO {
     @NotBlank(message = "Esse campo não pode ficar em branco")
     private String cpf;
     @NotBlank(message = "Esse campo não pode ficar em branco")
-    @Size(min = 11, message = "Número de telefone incálido, o número precisa ter ao menos 11 digitos")
+    @Size(min = 11, message = "Número de telefone inválido, o número precisa ter ao menos 11 digitos")
     private String telefone;
     @Email(message = "E-mail inválido. Tente novamente!")
     @NotBlank(message = "Esse campo não pode ficar em branco")
