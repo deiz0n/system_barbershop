@@ -4,6 +4,7 @@ import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -46,9 +47,15 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
 
     @Override
     public Barbearia addResource(BarbeariaDTO barbeariaDTO) {
-        var barbearia = new Barbearia();
-        BeanUtils.copyProperties(barbeariaDTO, barbearia, "id");
-        return barbeariaRepository.save(barbearia);
+        if (barbeariaRepository.existsNome().contains(barbeariaDTO.getNome())) {
+            throw new ExistingFieldException("Nome já cadastrado");
+        } else if (barbeariaRepository.existsCNPJ().contains(barbeariaDTO.getCnpj())) {
+            throw new ExistingFieldException("CNPJ já cadastrado");
+        } else {
+            var barbearia = new Barbearia();
+            BeanUtils.copyProperties(barbeariaDTO, barbearia, "id");
+            return barbeariaRepository.save(barbearia);
+        }
     }
 
     @Override

@@ -11,4 +11,10 @@ public interface BarbeariaRepository extends JpaRepository<Barbearia, UUID> {
 
     @Query("FROM tb_barbearia r LEFT JOIN FETCH r.horarios")
     List<Barbearia> findAll();
+
+    @Query("SELECT b.nome FROM tb_barbearia b")
+    List<String> existsNome();
+
+    @Query("SELECT b.cnpj FROM tb_barbearia b")
+    List<String> existsCNPJ();
 }

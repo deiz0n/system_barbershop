@@ -14,7 +14,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
     List<Cliente> findAll();
 
     @Query("SELECT c.cpf FROM tb_cliente c")
-    List<String> existsCpf();
+    List<String> existsCPF();
 
     @Query("SELECT c.telefone FROM tb_cliente c")
     List<String> existsTelefone();

@@ -51,7 +51,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
 
     @Override
     public Cliente addResource(ClienteDTO clienteDTO) {
-        if (clienteRepository.existsCpf().contains(clienteDTO.getCpf())) {
+        if (clienteRepository.existsCPF().contains(clienteDTO.getCpf())) {
             throw new ExistingFieldException("CPF já cadastrado");
         } else if (clienteRepository.existsEmail().contains(clienteDTO.getEmail())) {
             throw new ExistingFieldException("Email já cadastrado");

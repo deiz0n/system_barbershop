@@ -41,10 +41,13 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> argumentInvalid(MethodArgumentNotValidException exception, WebRequest request) {
+        var stringBuilder = new StringBuilder();
+        stringBuilder.append(exception.getFieldError().getField().toUpperCase().toUpperCase());
+        stringBuilder.append(" INVÁLIDO");
         var error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
-                exception.getFieldError().getField().toUpperCase() + " INVÁLIDO",
+                stringBuilder.toString(),
                 request.getDescription(false)
         );
         return ResponseEntity.status(400).body(error);
