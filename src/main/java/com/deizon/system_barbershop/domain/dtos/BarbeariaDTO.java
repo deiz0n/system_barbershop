@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data

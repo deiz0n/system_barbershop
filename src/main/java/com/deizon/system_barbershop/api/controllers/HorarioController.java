@@ -1,11 +1,14 @@
 package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
+import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.services.HorarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +22,13 @@ public class HorarioController {
     @Autowired
     private HorarioService horarioService;
 
+    @Autowired
+    private HorarioRepository horarioRepository;
+
     @GetMapping
     public ResponseEntity<List<HorarioDTO>> getHorarios() {
         var horarios = horarioService.findAll();
+        horarioRepository.existsHorario().forEach(System.out::println);
         return ResponseEntity.ok().body(horarios);
     }
 
@@ -34,8 +41,12 @@ public class HorarioController {
     @Transactional
     @PostMapping
     public ResponseEntity<?> createHorario(@RequestBody @Valid HorarioDTO newHorario) {
-        var horario = horarioService.addResource(newHorario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(horario);
+        if (horarioRepository.existsHorario().contains(newHorario.getHorarioInicial()) && horarioRepository.existsHorario().contains(newHorario.getHorarioFinal())) {
+            return ResponseEntity.badRequest().body("Horário já cadastrado");
+        } else {
+            var horario = horarioService.addResource(newHorario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(horario);
+        }
     }
 
     @Transactional

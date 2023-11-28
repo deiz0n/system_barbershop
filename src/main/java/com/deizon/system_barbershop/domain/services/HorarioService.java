@@ -4,6 +4,7 @@ import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.HorarioDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;

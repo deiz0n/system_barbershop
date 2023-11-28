@@ -24,5 +24,7 @@ public class HorarioDTO {
     private UUID id;
     private Instant horarioInicial;
     private Instant horarioFinal;
+    private Barbearia barbearia;
+    private Reserva reserva;
 
 }

@@ -25,7 +25,6 @@ public class Reserva {
     @ManyToOne
     private Cliente cliente;
 
-
     @OneToOne
     private Horario horario;
 }

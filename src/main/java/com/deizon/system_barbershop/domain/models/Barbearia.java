@@ -2,12 +2,10 @@ package com.deizon.system_barbershop.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -24,6 +22,8 @@ public class Barbearia {
     private String nome;
     private String cnpj;
 
+    @JsonIgnore
+    @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "barbearia")
     private List<Horario> horarios;
 
