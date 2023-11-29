@@ -28,7 +28,6 @@ public class HorarioController {
     @GetMapping
     public ResponseEntity<List<HorarioDTO>> getHorarios() {
         var horarios = horarioService.findAll();
-        horarioRepository.existsHorario().forEach(System.out::println);
         return ResponseEntity.ok().body(horarios);
     }
 

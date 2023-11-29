@@ -20,7 +20,6 @@ public class ReservaDTO {
     @EqualsAndHashCode.Include
     private UUID id;
     private Cliente cliente;
-    @JsonUnwrapped
     private Horario horario;
     
 }

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class ReservaController {
         return ResponseEntity.ok().body(reserva);
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<?> createReserva(@RequestBody @Valid ReservaDTO newReserva) {
         try {
@@ -45,12 +47,14 @@ public class ReservaController {
         }
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReserva(@PathVariable UUID id) {
         reservaService.remResource(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<?> updateReserva(@PathVariable UUID id, @RequestBody @Valid ReservaDTO newReserva) {
         var reserva = reservaService.updateResource(id, newReserva);

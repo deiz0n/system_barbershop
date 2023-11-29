@@ -25,6 +25,5 @@ public class HorarioDTO {
     private Instant horarioInicial;
     private Instant horarioFinal;
     private Barbearia barbearia;
-    private Reserva reserva;
 
 }

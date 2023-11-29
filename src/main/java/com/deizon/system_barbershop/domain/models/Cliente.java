@@ -14,6 +14,7 @@ import java.util.UUID;
 @Entity(name = "tb_cliente")
 public class Cliente {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

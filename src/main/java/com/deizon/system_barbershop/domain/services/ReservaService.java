@@ -50,7 +50,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     public Reserva addResource(ReservaDTO reservaDTO) {
         try {
             var reserva = new Reserva();
-            BeanUtils.copyProperties(reservaDTO, reserva);
+            BeanUtils.copyProperties(reservaDTO, reserva, "id");
             return reservaRepository.save(reserva);
         } catch (DataIntegrityViolationException error) {
             throw new ExistingFieldException("O horário já está cadastrado em outra reserva.");
