@@ -20,7 +20,6 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
 
     private BarbeariaRepository barbeariaRepository;
 
-
     private BarbeariaDTOMapper barbeariaDTOMapper;
 
     @Autowired
@@ -29,6 +28,7 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
         this.barbeariaDTOMapper = barbeariaDTOMapper;
     }
 
+    //Lista todas as barbeárias
     @Override
     public List<BarbeariaDTO> findAll() {
         var barbearias = barbeariaRepository.findAll()
@@ -38,6 +38,7 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
         return barbearias;
     }
 
+    //Lista uma barbeária comforme id
     @Override
     public BarbeariaDTO findByID(UUID id) {
         var barbearia = barbeariaRepository.findById(id)
@@ -45,19 +46,20 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
         return barbearia.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+    //Adiciona uma barbeária
     @Override
     public Barbearia addResource(BarbeariaDTO barbeariaDTO) {
-        if (barbeariaRepository.existsNome().contains(barbeariaDTO.getNome())) {
-            throw new ExistingFieldException("Nome já cadastrado");
-        } else if (barbeariaRepository.existsCNPJ().contains(barbeariaDTO.getCnpj())) {
-            throw new ExistingFieldException("CNPJ já cadastrado");
-        } else {
+        try {
             var barbearia = new Barbearia();
+            newDataValidation(barbeariaDTO);
             BeanUtils.copyProperties(barbeariaDTO, barbearia, "id");
             return barbeariaRepository.save(barbearia);
+        } catch (ExistingFieldException error) {
+            throw new ExistingFieldException(error.getMessage());
         }
     }
 
+    //Remove uma barbeária comforme id
     @Override
     public void remResource(UUID id) {
         var barbearia = barbeariaRepository.findById(id);
@@ -68,14 +70,18 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
         }
     }
 
+    //Atualiza os dados da barbearia
     @Override
     public Barbearia updateResource(UUID id, BarbeariaDTO barbeariaDTO) {
         var oldCliente = barbeariaRepository.getReferenceById(id);
         try {
+            newDataValidation(barbeariaDTO);
             updateDataResource(oldCliente, barbeariaDTO);
             return barbeariaRepository.save(oldCliente);
         } catch (EntityNotFoundException error) {
             throw new ResourceNotFoundException(id);
+        } catch (ExistingFieldException error) {
+            throw new ExistingFieldException(error.getMessage());
         }
     }
 
@@ -83,5 +89,17 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     public void updateDataResource(Barbearia oldResource, BarbeariaDTO newResource) {
         oldResource.setNome(newResource.getNome());
         oldResource.setCnpj(newResource.getCnpj());
+    }
+
+    //Verifica se os dados inseridos são válidos
+    @Override
+    public boolean newDataValidation(BarbeariaDTO newBarbearia) {
+        if (barbeariaRepository.existsNome().contains(newBarbearia.getNome())) {
+            throw new ExistingFieldException("Nome já cadastrado");
+        } else if (barbeariaRepository.existsCNPJ().contains(newBarbearia.getCnpj())) {
+            throw new ExistingFieldException("CNPJ já cadastrado");
+        } else {
+            return true;
+        }
     }
 }

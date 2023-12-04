@@ -44,7 +44,7 @@ public class ExceptionHandlingController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> argumentInvalid(MethodArgumentNotValidException exception, WebRequest request) {
         var stringBuilder = new StringBuilder();
-        stringBuilder.append(exception.getFieldError().getField().toUpperCase().toUpperCase());
+        stringBuilder.append(exception.getFieldError().getField().toUpperCase());
         stringBuilder.append(" INVÁLIDO");
         var error = new Error(
                 Instant.now(),
@@ -56,11 +56,22 @@ public class ExceptionHandlingController {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> dataInvalid(HttpMessageConversionException exception, WebRequest request) {
+    public ResponseEntity<?> dateInvalid(WebRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
-                "O HORÁRIO INFORMADO POSSUI FORMATO INVÁLIDOI",
+                "O HORÁRIO INFORMADO POSSUI FORMATO INVÁLIDO",
+                request.getDescription(false)
+        );
+        return ResponseEntity.status(400).body(error);
+    }
+
+    @ExceptionHandler(ArgumentNotValidException.class)
+    public ResponseEntity<?> dateShort(ArgumentNotValidException exception, WebRequest request) {
+        var error = new Error(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage().toUpperCase(),
                 request.getDescription(false)
         );
         return ResponseEntity.status(400).body(error);

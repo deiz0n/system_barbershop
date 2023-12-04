@@ -30,6 +30,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         this.reservaDTOMapper = reservaDTOMapper;
     }
 
+    //Lista todas as reservas
     @Override
     public List<ReservaDTO> findAll() {
         var reservas = reservaRepository.findAll()
@@ -39,6 +40,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         return reservas;
     }
 
+    //Retorna a reserva comforme id
     @Override
     public ReservaDTO findByID(UUID id) {
         var reserva = reservaRepository.findById(id)
@@ -46,6 +48,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         return reserva.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+    //Adiciona uma reserva
     @Override
     public Reserva addResource(ReservaDTO reservaDTO) {
         try {
@@ -57,6 +60,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         }
     }
 
+    //Remove uma reserva comforme id
     @Override
     public void remResource(UUID id) {
         var reserva = reservaRepository.findById(id);
@@ -67,6 +71,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         }
     }
 
+    //Atualiza os dados da reserva
     @Override
     public Reserva updateResource(UUID id, ReservaDTO newReserva) {
         var reserva = reservaRepository.getReferenceById(id);
@@ -82,5 +87,11 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     public void updateDataResource(Reserva oldResource, ReservaDTO newResource) {
         oldResource.setCliente(newResource.getCliente());
         oldResource.setHorario(newResource.getHorario());
+    }
+
+    //Verifica se os dados inseridos são válidos
+    @Override
+    public boolean newDataValidation(ReservaDTO newCliente) {
+        return false;
     }
 }
