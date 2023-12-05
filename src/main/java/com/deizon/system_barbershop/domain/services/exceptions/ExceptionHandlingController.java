@@ -1,6 +1,8 @@
 package com.deizon.system_barbershop.domain.services.exceptions;
 
 import com.deizon.system_barbershop.domain.models.Cliente;
+import jakarta.validation.ConstraintDeclarationException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
@@ -75,6 +78,23 @@ public class ExceptionHandlingController {
                 request.getDescription(false)
         );
         return ResponseEntity.status(400).body(error);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<?> contraintVioletion(SQLIntegrityConstraintViolationException exception, WebRequest request) {
+        var msg = new StringBuilder();
+        if (exception.getMessage().contains("FK40agr0nhu8t21hlb0s4bifbsp")) {
+            msg.append("O HORÁRIO NÃO PODE SER EXCLUÍDO POIS ESTÁ VINCULADO A UMA RESERVA");
+        } else if(exception.getMessage().contains("FK14ooegqc541axpd59bmvmbw1p")) {
+            msg.append("O CLIENTE NÃO PODE SER EXCLUÍDO POIS ESTÁ VINCULADO A UMA RESERVA");
+        }
+        var error = new Error(
+                Instant.now(),
+                HttpStatus.CONFLICT,
+                msg.toString(),
+                request.getDescription(false)
+        );
+    return ResponseEntity.status(409).body(error);
     }
 
 }

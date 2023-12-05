@@ -4,9 +4,11 @@ import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ClienteDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,11 +64,15 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     //Remove um cliente conforme id
     @Override
     public void remResource(UUID id) {
-        var cliente = clienteRepository.findById(id);
-        if (cliente.isPresent()) {
-            clienteRepository.delete(cliente.get());
-        } else {
-            throw new ResourceNotFoundException(id);
+        try {
+            var cliente = clienteRepository.findById(id);
+            if (cliente.isPresent()) {
+                clienteRepository.delete(cliente.get());
+            } else {
+                throw new ResourceNotFoundException(id);
+            }
+        } catch (ConstraintViolationException error) {
+            throw new DataIntegrityException("O cliente não pode ser excluído pois está vinculado a uma reserva");
         }
     }
 
