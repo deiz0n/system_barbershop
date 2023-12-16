@@ -19,18 +19,21 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    //Retonar todos os clientes
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> getClientes() {
         var clientes = clienteService.findAll();
         return ResponseEntity.ok().body(clientes);
     }
 
+    //Retorna um cliente comforme id
     @GetMapping("/{id}")
     public ResponseEntity<?> getCliente(@PathVariable UUID id) {
         var cliente = clienteService.findByID(id);
         return ResponseEntity.ok().body(cliente);
     }
 
+    //Cria um novo cliente
     @Transactional
     @PostMapping
     public ResponseEntity<?> createCliente(@RequestBody @Valid ClienteDTO newCliente) {
@@ -38,6 +41,7 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
     }
 
+    //Deleta um cliente comforme id
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCliente(@PathVariable UUID id) {
@@ -45,6 +49,7 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
+    //Atualiza os dados do cliente comforme id
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCliente(@PathVariable UUID id,

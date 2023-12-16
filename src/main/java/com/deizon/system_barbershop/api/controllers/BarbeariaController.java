@@ -23,18 +23,21 @@ public class BarbeariaController {
         this.barbeariaService = barbeariaService;
     }
 
+    //Retonar todas as barbeároas
     @GetMapping
     public ResponseEntity<List<BarbeariaDTO>> getBarbearias() {
         var barbearias = barbeariaService.findAll();
         return ResponseEntity.ok().body(barbearias);
     }
 
+    //Retorna uma barbeária comforme id
     @GetMapping("/{id}")
     public ResponseEntity<BarbeariaDTO> getBarbearia(@PathVariable UUID id) {
         var barbearia = barbeariaService.findByID(id);
         return ResponseEntity.ok().body(barbearia);
     }
 
+    //Cria uma nova barbeária
     @Transactional
     @PostMapping
     public ResponseEntity<?> createBarbearia(@RequestBody @Valid BarbeariaDTO newBarbearia) {
@@ -42,6 +45,7 @@ public class BarbeariaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(barbearia);
     }
 
+    //Deleta uma barbeária comforme id
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBarbearia(@PathVariable UUID id) {
@@ -49,6 +53,7 @@ public class BarbeariaController {
         return ResponseEntity.noContent().build();
     }
 
+    //Atualiza os dados da barbeária comforme id
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBarbearia(@PathVariable UUID id,

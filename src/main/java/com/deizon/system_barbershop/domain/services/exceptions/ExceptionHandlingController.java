@@ -38,10 +38,10 @@ public class ExceptionHandlingController {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
-                exception.getMessage(),
+                exception.getMessage().toUpperCase(),
                 request.getDescription(false)
         );
-        return ResponseEntity.status(400).body(error);
+        return ResponseEntity.status(409).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

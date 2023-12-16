@@ -64,15 +64,11 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     //Remove um cliente conforme id
     @Override
     public void remResource(UUID id) {
-        try {
-            var cliente = clienteRepository.findById(id);
-            if (cliente.isPresent()) {
-                clienteRepository.delete(cliente.get());
-            } else {
-                throw new ResourceNotFoundException(id);
-            }
-        } catch (ConstraintViolationException error) {
-            throw new DataIntegrityException("O cliente não pode ser excluído pois está vinculado a uma reserva");
+        var cliente = clienteRepository.findById(id);
+        if (cliente.isPresent()) {
+            clienteRepository.delete(cliente.get());
+        } else {
+            throw new ResourceNotFoundException(id);
         }
     }
 

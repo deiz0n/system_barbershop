@@ -23,32 +23,29 @@ public class HorarioController {
     @Autowired
     private HorarioService horarioService;
 
-    @Autowired
-    private HorarioRepository horarioRepository;
-
+    //Retonar todos os horários
     @GetMapping
     public ResponseEntity<List<HorarioDTO>> getHorarios() {
         var horarios = horarioService.findAll();
         return ResponseEntity.ok().body(horarios);
     }
 
+    //Retorna um horário comforme id
     @GetMapping("/{id}")
     public ResponseEntity<HorarioDTO> getHorario(@PathVariable UUID id) {
         var horario = horarioService.findByID(id);
         return ResponseEntity.ok().body(horario);
     }
 
+    //Cria um novo horário
     @Transactional
     @PostMapping
     public ResponseEntity<?> createHorario(@RequestBody @Valid HorarioDTO newHorario) {
-        if (horarioRepository.existsHorario().contains(newHorario.getHorarioInicial()) && horarioRepository.existsHorario().contains(newHorario.getHorarioFinal())) {
-            return ResponseEntity.badRequest().body("Horário já cadastrado");
-        } else {
-            var horario = horarioService.addResource(newHorario);
-            return ResponseEntity.status(HttpStatus.CREATED).body(horario);
-        }
+        var horario = horarioService.addResource(newHorario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(horario);
     }
 
+    //Deleta um horário comforme id
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHorario(@PathVariable UUID id) {
@@ -56,6 +53,7 @@ public class HorarioController {
         return ResponseEntity.noContent().build();
     }
 
+    //Atualiza os dados do horário comforme id
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHorario(@PathVariable UUID id,

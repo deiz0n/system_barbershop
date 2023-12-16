@@ -24,18 +24,21 @@ public class ReservaController {
         this.reservaService = reservaService;
     }
 
+    //Retonar todas as reservas
     @GetMapping
     public ResponseEntity<List<ReservaDTO>> getReservas() {
         var reservas = reservaService.findAll();
         return ResponseEntity.ok().body(reservas);
     }
 
+    //Retorna uma reserva comforme id
     @GetMapping("/{id}")
     public ResponseEntity<ReservaDTO> getReserva(@PathVariable UUID id) {
         var reserva = reservaService.findByID(id);
         return ResponseEntity.ok().body(reserva);
     }
 
+    //Cria uma nova reserva
     @Transactional
     @PostMapping
     public ResponseEntity<?> createReserva(@RequestBody @Valid ReservaDTO newReserva) {
@@ -47,6 +50,7 @@ public class ReservaController {
         }
     }
 
+    //Deleta uma reserva comforme id
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReserva(@PathVariable UUID id) {
@@ -54,6 +58,7 @@ public class ReservaController {
         return ResponseEntity.noContent().build();
     }
 
+    //Atualiza os dados da reserva comforme id
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<?> updateReserva(@PathVariable UUID id, @RequestBody @Valid ReservaDTO newReserva) {

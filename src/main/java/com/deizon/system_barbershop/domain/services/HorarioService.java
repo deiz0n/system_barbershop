@@ -6,6 +6,7 @@ import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.HorarioDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ArgumentNotValidException;
 import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
+import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -56,13 +57,17 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     //Adiciona um horário
     @Override
     public Horario addResource(HorarioDTO horarioDTO) {
-        try {
-            newDataValidation(horarioDTO);
-            var horario = new Horario();
-            BeanUtils.copyProperties(horarioDTO, horario, "id");
-            return horarioRepository.save(horario);
-        } catch (ArgumentNotValidException error) {
-            throw new ArgumentNotValidException(error.getMessage());
+        if (horarioRepository.existsHorario().contains(horarioDTO.getHorarioInicial()) && horarioRepository.existsHorario().contains(horarioDTO.getHorarioFinal())) {
+            throw new ExistingFieldException("Horário já cadastrado");
+        } else {
+            try {
+                newDataValidation(horarioDTO);
+                var horario = new Horario();
+                BeanUtils.copyProperties(horarioDTO, horario, "id");
+                return horarioRepository.save(horario);
+            } catch (ArgumentNotValidException error) {
+                throw new ArgumentNotValidException(error.getMessage());
+            }
         }
     }
 
