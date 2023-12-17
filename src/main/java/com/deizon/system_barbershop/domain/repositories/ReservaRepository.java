@@ -13,7 +13,4 @@ public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
 
     @Query("FROM tb_reserva r JOIN FETCH r.horario JOIN FETCH r.cliente")
     ArrayList<Reserva> findAll();
-
-    @Query("SELECT r.horario FROM tb_reserva r")
-    ArrayList<Horario> existsHorarioInReserva();
 }
