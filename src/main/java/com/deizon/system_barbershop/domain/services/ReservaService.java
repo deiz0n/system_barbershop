@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -91,7 +90,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
 
     //Verifica se os dados inseridos são válidos
     @Override
-    public boolean newDataValidation(ReservaDTO newCliente) {
-        return false;
+    public boolean newDataValidation(ReservaDTO newHorario) {
+       return false;
     }
 }

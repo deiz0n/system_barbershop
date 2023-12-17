@@ -98,11 +98,11 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     //Verifica se os dados inseridos são válidos
     @Override
     public boolean newDataValidation(ClienteDTO newCliente) {
-        if (clienteRepository.existsCPF().contains(newCliente.getCpf())) {
+        if (clienteRepository.existsCPF().contains(newCliente.getCpf())) { //Verifica se o CPF já foi cadastrado
             throw new ExistingFieldException("CPF já cadastrado");
-        } else if (clienteRepository.existsEmail().contains(newCliente.getEmail())) {
+        } else if (clienteRepository.existsEmail().contains(newCliente.getEmail())) { //Verifica se o email já foi cadastrado
             throw new ExistingFieldException("Email já cadastrado");
-        } else if (clienteRepository.existsTelefone().contains(newCliente.getTelefone())) {
+        } else if (clienteRepository.existsTelefone().contains(newCliente.getTelefone())) { //Verifica se o telefone já foi cadastrado
             throw new ExistingFieldException("Telefone já cadastrado");
         } else {
             return true;

@@ -94,9 +94,9 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     //Verifica se os dados inseridos são válidos
     @Override
     public boolean newDataValidation(BarbeariaDTO newBarbearia) {
-        if (barbeariaRepository.existsNome().contains(newBarbearia.getNome())) {
+        if (barbeariaRepository.existsNome().contains(newBarbearia.getNome())) { //Verifica se o nome já foi cadastrado
             throw new ExistingFieldException("Nome já cadastrado");
-        } else if (barbeariaRepository.existsCNPJ().contains(newBarbearia.getCnpj())) {
+        } else if (barbeariaRepository.existsCNPJ().contains(newBarbearia.getCnpj())) { //Verifica se o CNPJ já foi cadastrado
             throw new ExistingFieldException("CNPJ já cadastrado");
         } else {
             return true;

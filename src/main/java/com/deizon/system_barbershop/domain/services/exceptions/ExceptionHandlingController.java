@@ -37,7 +37,7 @@ public class ExceptionHandlingController {
     public ResponseEntity<?> existingField(ExistingFieldException exception, WebRequest request) {
         var error = new Error(
                 Instant.now(),
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.CONFLICT,
                 exception.getMessage().toUpperCase(),
                 request.getDescription(false)
         );
@@ -85,8 +85,12 @@ public class ExceptionHandlingController {
         var msg = new StringBuilder();
         if (exception.getMessage().contains("FK40agr0nhu8t21hlb0s4bifbsp")) {
             msg.append("O HORÁRIO NÃO PODE SER EXCLUÍDO POIS ESTÁ VINCULADO A UMA RESERVA");
-        } else if(exception.getMessage().contains("FK14ooegqc541axpd59bmvmbw1p")) {
+        }
+        if(exception.getMessage().contains("FK14ooegqc541axpd59bmvmbw1p")) {
             msg.append("O CLIENTE NÃO PODE SER EXCLUÍDO POIS ESTÁ VINCULADO A UMA RESERVA");
+        }
+        if ("23000".equals(exception.getSQLState())) {
+            msg.append("O HORÁRIO JÁ ESTÁ VINCULADO A UMA RESERVA");
         }
         var error = new Error(
                 Instant.now(),
