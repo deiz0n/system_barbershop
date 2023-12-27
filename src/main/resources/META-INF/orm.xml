@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+        xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+        version="2.2">
+
+        <named-query name="Barbearia.findAll">
+            <query>
+                FROM tb_barbearia r LEFT JOIN FETCH r.horarios
+            </query>
+        </named-query>
+
+        <named-query name="Barbearia.getDataByReserva">
+            <query>
+                SELECT b.nome FROM tb_barbearia b
+                INNER JOIN tb_horario h ON b.id = h.barbearia.id
+                INNER JOIN tb_reserva r ON r.horario.id = h.id
+            </query>
+        </named-query>
+    
+        <named-query name="Cliente.findAll">
+            <query>
+                FROM tb_cliente c LEFT JOIN FETCH c.reservas
+            </query>
+        </named-query>
+    
+        <named-query name="Cliente.getDataByReservas">
+            <query>
+                SELECT c.nome FROM tb_cliente c 
+                INNER JOIN tb_reserva r ON c.id = r.cliente.id 
+                WHERE r.id = :id 
+                UNION ALL SELECT c.email FROM tb_cliente c 
+                INNER JOIN tb_reserva r ON c.id = r.cliente.id WHERE r.id = :id
+            </query>
+        </named-query>
+    
+        <named-query name="Horario.existsHorario">
+            <query>
+                SELECT i.horarioInicial FROM tb_horario i 
+                UNION SELECT f.horarioFinal FROM tb_horario f
+            </query>
+        </named-query>
+    
+        <named-query name="Horario.getDataByReservas">
+            <query>
+                SELECT h.horarioInicial FROM tb_horario h
+                INNER JOIN tb_reserva r ON h.id = r.horario.id
+                WHERE r.id = :id
+            </query>
+        </named-query>
+
+        <named-query name="Reserva.findAll">
+            <query>
+                FROM tb_reserva r JOIN FETCH r.horario JOIN FETCH r.cliente
+            </query>
+        </named-query>
+    
+</entity-mappings>

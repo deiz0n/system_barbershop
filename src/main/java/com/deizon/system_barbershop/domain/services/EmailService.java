@@ -51,7 +51,7 @@ public class EmailService {
             var text = new StringBuilder();
             text.append("Olá ");
             text.append(getClienteData.get(0));
-            text.append(", sua reserva na ");
+            text.append(", sua reserva no(a) ");
             text.append(getBarbeariaData);
             text.append(". Foi agendada para o dia: ");
             text.append(dateTime.getDayOfMonth());

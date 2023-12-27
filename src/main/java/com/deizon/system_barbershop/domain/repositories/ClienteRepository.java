@@ -12,7 +12,6 @@ import java.util.UUID;
 
 public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
-    @Query("FROM tb_cliente c LEFT JOIN FETCH c.reservas")
     ArrayList<Cliente> findAll();
 
     @Query("SELECT c.cpf FROM tb_cliente c")
@@ -24,7 +23,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
     @Query("SELECT c.email FROM tb_cliente c")
     ArrayList<String> existsEmail();
 
-    @Query("SELECT c.nome FROM tb_cliente c INNER JOIN tb_reserva r ON c.id = r.cliente.id WHERE r.id = :id UNION ALL SELECT c.email FROM tb_cliente c INNER JOIN tb_reserva r ON c.id = r.cliente.id WHERE r.id = :id")
     ArrayList<String> getDataByReservas(UUID id);
 
 }
