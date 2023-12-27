@@ -1,6 +1,9 @@
 package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
+import com.deizon.system_barbershop.domain.models.Email;
+import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
+import com.deizon.system_barbershop.domain.services.EmailService;
 import com.deizon.system_barbershop.domain.services.ReservaService;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import jakarta.validation.Valid;
@@ -17,11 +20,17 @@ import java.util.UUID;
 @RequestMapping("/reservas")
 public class ReservaController {
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     private ReservaService reservaService;
 
+    private EmailService emailService;
+
     @Autowired
-    public ReservaController(ReservaService reservaService) {
+    public ReservaController(ReservaService reservaService, EmailService emailService) {
         this.reservaService = reservaService;
+        this.emailService = emailService;
     }
 
     //Retonar todas as reservas
@@ -44,6 +53,7 @@ public class ReservaController {
     public ResponseEntity<?> createReserva(@RequestBody @Valid ReservaDTO newReserva) {
         try {
             var reserva = reservaService.addResource(newReserva);
+            emailService.sendEmail(reserva.getId(), new Email());
             return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
         } catch (ExistingFieldException error) {
             return ResponseEntity.badRequest().body("O horário informado já está cadastrado em outra reserva.");

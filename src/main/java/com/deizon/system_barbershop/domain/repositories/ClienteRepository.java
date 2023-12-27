@@ -3,6 +3,7 @@ package com.deizon.system_barbershop.domain.repositories;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,5 +23,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
     @Query("SELECT c.email FROM tb_cliente c")
     ArrayList<String> existsEmail();
+
+    @Query("SELECT c.nome FROM tb_cliente c INNER JOIN tb_reserva r ON c.id = r.cliente.id WHERE r.id = :id UNION ALL SELECT c.email FROM tb_cliente c INNER JOIN tb_reserva r ON c.id = r.cliente.id WHERE r.id = :id")
+    ArrayList<String> getDataByReservas(UUID id);
 
 }

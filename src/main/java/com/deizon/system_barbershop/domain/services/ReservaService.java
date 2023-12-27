@@ -1,7 +1,10 @@
 package com.deizon.system_barbershop.domain.services;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
+import com.deizon.system_barbershop.domain.models.Email;
 import com.deizon.system_barbershop.domain.models.Reserva;
+import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
+import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ReservaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
+
 
     private ReservaRepository reservaRepository;
 
@@ -52,7 +56,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     public Reserva addResource(ReservaDTO reservaDTO) {
         try {
             var reserva = new Reserva();
-            BeanUtils.copyProperties(reservaDTO, reserva, "id");
+            BeanUtils.copyProperties(reservaDTO, reserva);
             return reservaRepository.save(reserva);
         } catch (DataIntegrityViolationException error) {
             throw new ExistingFieldException("O horário já está cadastrado em outra reserva.");

@@ -2,6 +2,7 @@ package com.deizon.system_barbershop.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +32,8 @@ public class Horario {
     @ManyToOne
     private Barbearia barbearia;
 
-    @JsonIgnore
-    @OneToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToOne(cascade = CascadeType.ALL)
     private Reserva reserva;
 
 }
