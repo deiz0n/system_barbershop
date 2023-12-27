@@ -59,15 +59,14 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     public Horario addResource(HorarioDTO horarioDTO) {
         if (horarioRepository.existsHorario().contains(horarioDTO.getHorarioInicial()) && horarioRepository.existsHorario().contains(horarioDTO.getHorarioFinal())) {
             throw new ExistingFieldException("Horário já cadastrado");
-        } else {
-            try {
-                newDataValidation(horarioDTO);
-                var horario = new Horario();
-                BeanUtils.copyProperties(horarioDTO, horario, "id");
-                return horarioRepository.save(horario);
-            } catch (ArgumentNotValidException error) {
-                throw new ArgumentNotValidException(error.getMessage());
-            }
+        }
+        try {
+            newDataValidation(horarioDTO);
+            var horario = new Horario();
+            BeanUtils.copyProperties(horarioDTO, horario, "id");
+            return horarioRepository.save(horario);
+        } catch (ArgumentNotValidException error) {
+            throw new ArgumentNotValidException(error.getMessage());
         }
     }
 
@@ -75,11 +74,9 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     @Override
     public void remResource(UUID id) {
         var horario = horarioRepository.findById(id);
-        if (horario.isPresent()) {
-            horarioRepository.delete(horario.get());
-        } else {
+        if (!horario.isPresent())
             throw new ResourceNotFoundException(id);
-        }
+        horarioRepository.delete(horario.get());
     }
 
     //Atualiza os dados do horário
@@ -108,13 +105,10 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     public boolean newDataValidation(HorarioDTO newHorario) {
         if (newHorario.getHorarioFinal().isAfter(newHorario.getHorarioInicial())) { //Verifica se o horário inicial é maior que o final
             var duration = Duration.between(newHorario.getHorarioInicial(), newHorario.getHorarioFinal()).toMinutes();
-            if (duration < 20) { //Verifica se a diferença entre horários é menor que 20 minutos
+            if (duration < 20)  //Verifica se a diferença entre horários é menor que 20 minutos
                 throw new ArgumentNotValidException("Intervalo de tempo muito curto. Tente novamente");
-            } else {
-                return true;
-            }
-        } else {
-            throw new ArgumentNotValidException("O horário inicial não pode ser posteior ao horário final.");
+            return true;
         }
+        throw new ArgumentNotValidException("O horário inicial não pode ser posteior ao horário final.");
     }
 }
