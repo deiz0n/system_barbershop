@@ -67,11 +67,9 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     @Override
     public void remResource(UUID id) {
         var reserva = reservaRepository.findById(id);
-        if (reserva.isPresent()) {
-            reservaRepository.delete(reserva.get());
-        } else {
+        if (!reserva.isPresent())
             throw new ResourceNotFoundException(id);
-        }
+        reservaRepository.delete(reserva.get());
     }
 
     //Atualiza os dados da reserva
