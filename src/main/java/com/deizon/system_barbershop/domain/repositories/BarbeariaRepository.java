@@ -6,15 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BarbeariaRepository extends JpaRepository<Barbearia, UUID> {
 
-    @Query("SELECT b.nome FROM tb_barbearia b")
-    ArrayList<String> existsNome();
+    Optional<Barbearia> getBarbeariaByNome(String nome);
 
-    @Query("SELECT b.cnpj FROM tb_barbearia b")
-    ArrayList<String> existsCNPJ();
+    Optional<Barbearia> getBarbeariaByCnpj(String cnpj);
 
     String getDataByReserva(UUID id);
 }

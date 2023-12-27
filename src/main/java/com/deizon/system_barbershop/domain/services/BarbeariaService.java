@@ -63,11 +63,9 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     @Override
     public void remResource(UUID id) {
         var barbearia = barbeariaRepository.findById(id);
-        if (barbearia.isPresent()) {
-            barbeariaRepository.delete(barbearia.get());
-        } else {
+        if (!barbearia.isPresent())
             throw new ResourceNotFoundException(id);
-        }
+        barbeariaRepository.delete(barbearia.get());
     }
 
     //Atualiza os dados da barbearia
@@ -94,12 +92,10 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     //Verifica se os dados inseridos são válidos
     @Override
     public boolean newDataValidation(BarbeariaDTO newBarbearia) {
-        if (barbeariaRepository.existsNome().contains(newBarbearia.getNome())) { //Verifica se o nome já foi cadastrado
+        if (barbeariaRepository.getBarbeariaByNome(newBarbearia.getNome()).isPresent())
             throw new ExistingFieldException("Nome já cadastrado");
-        } else if (barbeariaRepository.existsCNPJ().contains(newBarbearia.getCnpj())) { //Verifica se o CNPJ já foi cadastrado
+        if (barbeariaRepository.getBarbeariaByCnpj(newBarbearia.getCnpj()).isPresent())
             throw new ExistingFieldException("CNPJ já cadastrado");
-        } else {
-            return true;
-        }
+        return true;
     }
 }
