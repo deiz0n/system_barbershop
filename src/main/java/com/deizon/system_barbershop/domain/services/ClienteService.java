@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Service
 public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
 
-
     private ClienteRepository clienteRepository;
 
     private ClienteDTOMapper clienteDTOMapper;
@@ -54,7 +53,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
         try {
             var cliente = new Cliente();
             newDataValidation(clienteDTO);
-            BeanUtils.copyProperties(clienteDTO, cliente, "id");
+            BeanUtils.copyProperties(clienteDTO, cliente);
             return clienteRepository.save(cliente);
         } catch (ExistingFieldException error) {
             throw new ExistingFieldException(error.getMessage());
@@ -65,11 +64,9 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     @Override
     public void remResource(UUID id) {
         var cliente = clienteRepository.findById(id);
-        if (cliente.isPresent()) {
-            clienteRepository.delete(cliente.get());
-        } else {
+        if (!cliente.isPresent())
             throw new ResourceNotFoundException(id);
-        }
+        clienteRepository.delete(cliente.get());
     }
 
     //Atualiza os dados do cliente
@@ -98,15 +95,13 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     //Verifica se os dados inseridos são válidos
     @Override
     public boolean newDataValidation(ClienteDTO newCliente) {
-        if (clienteRepository.existsCPF().contains(newCliente.getCpf())) { //Verifica se o CPF já foi cadastrado
+        if (clienteRepository.getClienteByCpf(newCliente.getCpf()).isPresent())
             throw new ExistingFieldException("CPF já cadastrado");
-        } else if (clienteRepository.existsEmail().contains(newCliente.getEmail())) { //Verifica se o email já foi cadastrado
+        if (clienteRepository.getClienteByEmail(newCliente.getEmail()).isPresent())
             throw new ExistingFieldException("Email já cadastrado");
-        } else if (clienteRepository.existsTelefone().contains(newCliente.getTelefone())) { //Verifica se o telefone já foi cadastrado
+        if (clienteRepository.getClienteByTelefone(newCliente.getTelefone()).isPresent())
             throw new ExistingFieldException("Telefone já cadastrado");
-        } else {
-            return true;
-        }
+        return true;
     }
 
 }

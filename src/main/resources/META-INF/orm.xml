@@ -50,10 +50,4 @@
             </query>
         </named-query>
 
-        <named-query name="Reserva.findAll">
-            <query>
-                FROM tb_reserva r JOIN FETCH r.horario JOIN FETCH r.cliente
-            </query>
-        </named-query>
-    
 </entity-mappings>

@@ -10,8 +10,6 @@ import java.util.UUID;
 
 public interface BarbeariaRepository extends JpaRepository<Barbearia, UUID> {
 
-    ArrayList<Barbearia> findAll();
-
     @Query("SELECT b.nome FROM tb_barbearia b")
     ArrayList<String> existsNome();
 

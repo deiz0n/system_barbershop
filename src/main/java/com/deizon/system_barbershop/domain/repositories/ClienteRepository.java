@@ -8,20 +8,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
     ArrayList<Cliente> findAll();
 
-    @Query("SELECT c.cpf FROM tb_cliente c")
-    ArrayList<String> existsCPF();
+    Optional<Cliente> getClienteByCpf(String cpf);
 
-    @Query("SELECT c.telefone FROM tb_cliente c")
-    ArrayList<String> existsTelefone();
+    Optional<Cliente> getClienteByTelefone(String telefone);
 
-    @Query("SELECT c.email FROM tb_cliente c")
-    ArrayList<String> existsEmail();
+    Optional<Cliente> getClienteByEmail(String email);
 
     ArrayList<String> getDataByReservas(UUID id);
 
