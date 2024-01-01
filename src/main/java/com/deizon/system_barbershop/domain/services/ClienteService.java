@@ -48,14 +48,10 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     //Adiciona um cliente
     @Override
     public Cliente addResource(ClienteDTO clienteDTO) {
-        try {
-            var cliente = new Cliente();
-            newDataValidation(clienteDTO);
-            BeanUtils.copyProperties(clienteDTO, cliente);
-            return clienteRepository.save(cliente);
-        } catch (ExistingFieldException error) {
-            throw new ExistingFieldException(error.getMessage());
-        }
+        var cliente = new Cliente();
+        BeanUtils.copyProperties(clienteDTO, cliente);
+        newDataValidation(cliente);
+        return clienteRepository.save(cliente);
     }
 
     //Remove um cliente conforme id
@@ -72,13 +68,11 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     public Cliente updateResource(UUID id, ClienteDTO newCliente) {
         var oldCliente = clienteRepository.getReferenceById(id);
         try {
-            newDataValidation(newCliente);
             updateDataResource(oldCliente, newCliente);
+            newDataValidation(oldCliente);
             return clienteRepository.save(oldCliente);
         } catch (EntityNotFoundException error) {
             throw new ResourceNotFoundException(id);
-        } catch (ExistingFieldException error) {
-            throw new ExistingFieldException(error.getMessage());
         }
     }
 
@@ -91,14 +85,16 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     }
 
     //Verifica se os dados inseridos são válidos
-    public boolean newDataValidation(ClienteDTO newCliente) {
-        if (clienteRepository.getClienteByCpf(newCliente.getCpf()).isPresent())
+    public void newDataValidation(Cliente newCliente) {
+        var clienteByCpf = clienteRepository.findByCpf(newCliente.getCpf());
+        if (clienteByCpf.isPresent() && !clienteByCpf.get().getId().equals(newCliente.getId()))
             throw new ExistingFieldException("CPF já cadastrado");
-        if (clienteRepository.getClienteByEmail(newCliente.getEmail()).isPresent())
+        var clienteByEmail = clienteRepository.findByEmail(newCliente.getEmail());
+        if (clienteByEmail.isPresent() && !clienteByEmail.get().getId().equals(newCliente.getId()))
             throw new ExistingFieldException("Email já cadastrado");
-        if (clienteRepository.getClienteByTelefone(newCliente.getTelefone()).isPresent())
+        var clienteByTelefone = clienteRepository.findByTelefone(newCliente.getTelefone());
+        if (clienteByTelefone.isPresent() && !clienteByTelefone.get().getId().equals(newCliente.getId()))
             throw new ExistingFieldException("Telefone já cadastrado");
-        return true;
     }
 
 }

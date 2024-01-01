@@ -11,11 +11,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
     ArrayList<Cliente> findAll();
 
-    Optional<Cliente> getClienteByCpf(String cpf);
+    Optional<Cliente> findByCpf(String cpf);
 
-    Optional<Cliente> getClienteByTelefone(String telefone);
+    Optional<Cliente> findByTelefone(String telefone);
 
-    Optional<Cliente> getClienteByEmail(String email);
+    Optional<Cliente> findByEmail(String email);
 
     ArrayList<String> getDataByReservas(UUID id);
 
