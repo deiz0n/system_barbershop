@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.domain.dtos;
 
 import com.deizon.system_barbershop.domain.models.Barbearia;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

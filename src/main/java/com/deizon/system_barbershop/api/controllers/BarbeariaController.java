@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
+import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.services.BarbeariaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/barbearias")
 public class BarbeariaController {
+
+    @Autowired
+    private HorarioRepository horarioRepository;
 
     private BarbeariaService barbeariaService;
 

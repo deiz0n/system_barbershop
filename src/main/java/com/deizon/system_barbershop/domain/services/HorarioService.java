@@ -51,17 +51,10 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     //Adiciona um horário
     @Override
     public Horario addResource(HorarioDTO horarioDTO) {
-        if (horarioRepository.existsHorario().contains(horarioDTO.getHorarioInicial()) && horarioRepository.existsHorario().contains(horarioDTO.getHorarioFinal())) {
-            throw new ExistingFieldException("Horário já cadastrado");
-        }
-        try {
-            newDataValidation(horarioDTO);
-            var horario = new Horario();
-            BeanUtils.copyProperties(horarioDTO, horario, "id");
-            return horarioRepository.save(horario);
-        } catch (ArgumentNotValidException error) {
-            throw new ArgumentNotValidException(error.getMessage());
-        }
+        var horario = new Horario();
+        BeanUtils.copyProperties(horarioDTO, horario);
+        dataValidation(horario);
+        return horarioRepository.save(horario);
     }
 
     //Remove um horário comforme id
@@ -78,13 +71,11 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     public Horario updateResource(UUID id, HorarioDTO newHorario) {
         var oldHorario = horarioRepository.getReferenceById(id);
         try {
-            newDataValidation(newHorario);
             updateDataResource(oldHorario, newHorario);
+            dataValidation(oldHorario);
             return horarioRepository.save(oldHorario);
         } catch (EntityNotFoundException error) {
             throw new ResourceNotFoundException(id);
-        } catch (ArgumentNotValidException error) {
-            throw new ArgumentNotValidException(error.getMessage());
         }
     }
 
@@ -95,13 +86,16 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     }
 
     //Verifica se os dados inseridos são válidos
-    public boolean newDataValidation(HorarioDTO newHorario) {
-        if (newHorario.getHorarioFinal().isAfter(newHorario.getHorarioInicial())) { //Verifica se o horário inicial é maior que o final
-            var duration = Duration.between(newHorario.getHorarioInicial(), newHorario.getHorarioFinal()).toMinutes();
-            if (duration < 20)  //Verifica se a diferença entre horários é menor que 20 minutos
-                throw new ArgumentNotValidException("Intervalo de tempo muito curto. Tente novamente");
-            return true;
+    public void dataValidation(Horario newHorario) {
+        var horarioByBarbearia = horarioRepository.findByBarbearia(newHorario.getBarbearia());
+        if (horarioByBarbearia.isPresent() && !horarioByBarbearia.get().getId().equals(newHorario.getId())) { //Verifica se o horário está vinculado a uma barbeária
+            throw new ExistingFieldException("Horário já cadastrado");
         }
-        throw new ArgumentNotValidException("O horário inicial não pode ser posteior ao horário final.");
+        if (newHorario.getHorarioInicial().isAfter(newHorario.getHorarioFinal())) { //Verifica se o horário inicial é posterior ao final
+            throw new ArgumentNotValidException("O horário inicial não pode ser posteior ao horário final.");
+        }
+        var duration = Duration.between(newHorario.getHorarioInicial(), newHorario.getHorarioFinal()).toMinutes();
+        if (duration < 20)  //Verifica se a diferença entre horários é menor que 20 minutos
+            throw new ArgumentNotValidException("Intervalo de tempo muito curto. Tente novamente");
     }
 }
