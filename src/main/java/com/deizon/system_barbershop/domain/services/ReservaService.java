@@ -1,10 +1,7 @@
 package com.deizon.system_barbershop.domain.services;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
-import com.deizon.system_barbershop.domain.models.Email;
 import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
-import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ReservaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
@@ -21,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
-
 
     private ReservaRepository reservaRepository;
 
@@ -91,7 +87,6 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     }
 
     //Verifica se os dados inseridos são válidos
-    @Override
     public boolean newDataValidation(ReservaDTO newHorario) {
        return false;
     }

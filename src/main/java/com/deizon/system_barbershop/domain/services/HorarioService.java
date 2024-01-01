@@ -5,19 +5,13 @@ import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.HorarioDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ArgumentNotValidException;
-import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.SQLNonTransientException;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
@@ -101,7 +95,6 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     }
 
     //Verifica se os dados inseridos são válidos
-    @Override
     public boolean newDataValidation(HorarioDTO newHorario) {
         if (newHorario.getHorarioFinal().isAfter(newHorario.getHorarioInicial())) { //Verifica se o horário inicial é maior que o final
             var duration = Duration.between(newHorario.getHorarioInicial(), newHorario.getHorarioFinal()).toMinutes();

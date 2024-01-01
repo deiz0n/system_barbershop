@@ -4,11 +4,9 @@ import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ClienteDTOMapper;
-import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,7 +91,6 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     }
 
     //Verifica se os dados inseridos são válidos
-    @Override
     public boolean newDataValidation(ClienteDTO newCliente) {
         if (clienteRepository.getClienteByCpf(newCliente.getCpf()).isPresent())
             throw new ExistingFieldException("CPF já cadastrado");

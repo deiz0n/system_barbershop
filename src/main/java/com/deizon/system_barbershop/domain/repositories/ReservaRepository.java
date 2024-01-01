@@ -1,13 +1,13 @@
 package com.deizon.system_barbershop.domain.repositories;
 
-import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.models.Reserva;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
+
+    //Optional<Reserva> getReservaByHorario(UUID id);
+
 }

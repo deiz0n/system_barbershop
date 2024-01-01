@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -49,14 +50,10 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     //Adiciona uma barbeária
     @Override
     public Barbearia addResource(BarbeariaDTO barbeariaDTO) {
-        try {
-            var barbearia = new Barbearia();
-            newDataValidation(barbeariaDTO);
-            BeanUtils.copyProperties(barbeariaDTO, barbearia, "id");
-            return barbeariaRepository.save(barbearia);
-        } catch (ExistingFieldException error) {
-            throw new ExistingFieldException(error.getMessage());
-        }
+        var barbearia = new Barbearia();
+        BeanUtils.copyProperties(barbeariaDTO, barbearia);
+        dataValidation(barbearia);
+        return barbeariaRepository.save(barbearia);
     }
 
     //Remove uma barbeária comforme id
@@ -73,13 +70,11 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     public Barbearia updateResource(UUID id, BarbeariaDTO barbeariaDTO) {
         var oldCliente = barbeariaRepository.getReferenceById(id);
         try {
-            newDataValidation(barbeariaDTO);
             updateDataResource(oldCliente, barbeariaDTO);
+            dataValidation(oldCliente);
             return barbeariaRepository.save(oldCliente);
         } catch (EntityNotFoundException error) {
             throw new ResourceNotFoundException(id);
-        } catch (ExistingFieldException error) {
-            throw new ExistingFieldException(error.getMessage());
         }
     }
 
@@ -90,12 +85,12 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     }
 
     //Verifica se os dados inseridos são válidos
-    @Override
-    public boolean newDataValidation(BarbeariaDTO newBarbearia) {
-        if (barbeariaRepository.getBarbeariaByNome(newBarbearia.getNome()).isPresent())
-            throw new ExistingFieldException("Nome já cadastrado");
-        if (barbeariaRepository.getBarbeariaByCnpj(newBarbearia.getCnpj()).isPresent())
-            throw new ExistingFieldException("CNPJ já cadastrado");
-        return true;
+    private void dataValidation(Barbearia newBarbeariaa) {
+        var barbeariaByNome = barbeariaRepository.findByNome(newBarbeariaa.getNome());
+        if (barbeariaByNome.isPresent() && !barbeariaByNome.get().getId().equals(newBarbeariaa.getId()))
+            throw new ExistingFieldException("Nome já vinculado a outra barbeária");
+        var barbeariaByCnpj = barbeariaRepository.findByCnpj(newBarbeariaa.getCnpj());
+        if (barbeariaByCnpj.isPresent() && !barbeariaByCnpj.get().getId().equals(newBarbeariaa.getId()))
+          throw new ExistingFieldException("CNPJ já vinculado a outra barbeária");
     }
 }
