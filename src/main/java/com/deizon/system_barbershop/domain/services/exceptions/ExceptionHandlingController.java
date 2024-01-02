@@ -1,5 +1,6 @@
 package com.deizon.system_barbershop.domain.services.exceptions;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -74,23 +75,31 @@ public class ExceptionHandlingController {
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<?> contraintVioletion(SQLIntegrityConstraintViolationException exception, WebRequest request) {
-        var msg = new StringBuilder();
+        var msg = new String();
         if (exception.getMessage().contains("FK40agr0nhu8t21hlb0s4bifbsp")) {
-            msg.append("O HORÁRIO NÃO PODE SER EXCLUÍDO POIS ESTÁ VINCULADO A UMA RESERVA");
+            msg = "O horário informado não foi encontrado.";
         }
         if(exception.getMessage().contains("FK14ooegqc541axpd59bmvmbw1p")) {
-            msg.append("O CLIENTE NÃO PODE SER EXCLUÍDO POIS ESTÁ VINCULADO A UMA RESERVA");
-        }
-        if ("23000".equals(exception.getSQLState())) {
-            msg.append("O HORÁRIO JÁ ESTÁ VINCULADO A UMA RESERVA");
+            msg = "O cliente informado não foi encontrado.";
         }
         var error = new Error(
                 Instant.now(),
-                HttpStatus.CONFLICT,
-                msg.toString(),
+                HttpStatus.BAD_REQUEST,
+                msg,
                 request.getDescription(false)
         );
-    return ResponseEntity.status(409).body(error);
+    return ResponseEntity.status(400).body(error);
+    }
+
+    @ExceptionHandler(DataIntegrityException.class)
+    public ResponseEntity<?> dataIntegrity(DataIntegrityException exception, HttpServletRequest request) {
+        var error = new Error(
+                Instant.now(),
+                HttpStatus.CONFLICT,
+                exception.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(409).body(error);
     }
 
 }
