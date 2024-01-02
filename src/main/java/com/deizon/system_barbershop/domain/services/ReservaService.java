@@ -7,19 +7,12 @@ import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ReservaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
-import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.SQLNonTransientConnectionException;
-import java.sql.SQLNonTransientException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -99,6 +92,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     }
 
     //Verifica se os dados inseridos são válidos
+    @Override
     public void dataValidation(Reserva newReserva) {
         var reservaByHorario = reservaRepository.findByHorario(newReserva.getHorario());
         if (reservaByHorario.isPresent())

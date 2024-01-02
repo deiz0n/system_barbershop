@@ -3,8 +3,10 @@ package com.deizon.system_barbershop.domain.services;
 import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
+import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.HorarioDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ArgumentNotValidException;
+import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,14 +22,17 @@ import java.util.stream.Collectors;
 @Service
 public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
 
+    private ReservaRepository reservaRepository;
+
     private HorarioRepository horarioRepository;
 
     private HorarioDTOMapper horarioDTOMapper;
 
     @Autowired
-    public HorarioService(HorarioRepository horarioRepository, HorarioDTOMapper horarioDTOMapper) {
+    public HorarioService(HorarioRepository horarioRepository, HorarioDTOMapper horarioDTOMapper, ReservaRepository reservaRepository) {
         this.horarioRepository = horarioRepository;
         this.horarioDTOMapper = horarioDTOMapper;
+        this.reservaRepository = reservaRepository;
     }
 
     //Lista todos os horários
@@ -63,6 +68,7 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
         var horario = horarioRepository.findById(id);
         if (!horario.isPresent())
             throw new ResourceNotFoundException(id);
+        dataValidation(horario.get());
         horarioRepository.delete(horario.get());
     }
 
@@ -86,7 +92,10 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     }
 
     //Verifica se os dados inseridos são válidos
+    @Override
     public void dataValidation(Horario newHorario) {
+        if (reservaRepository.findByHorario(newHorario).isPresent())
+            throw new DataIntegrityException("O horário não pode ser excluído pois está vinculado a uma reserva.");
         var horarioByBarbearia = horarioRepository.findByBarbearia(newHorario.getBarbearia());
         if (horarioByBarbearia.isPresent() && !horarioByBarbearia.get().getId().equals(newHorario.getId())) { //Verifica se o horário está vinculado a uma barbeária
             throw new ExistingFieldException("Horário já cadastrado");

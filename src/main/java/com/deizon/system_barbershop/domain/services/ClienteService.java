@@ -3,7 +3,9 @@ package com.deizon.system_barbershop.domain.services;
 import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
+import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ClienteDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,14 +20,17 @@ import java.util.stream.Collectors;
 @Service
 public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
 
+    private ReservaRepository reservaRepository;
+
     private ClienteRepository clienteRepository;
 
     private ClienteDTOMapper clienteDTOMapper;
 
     @Autowired
-    public ClienteService(ClienteRepository clienteRepository, ClienteDTOMapper clienteDTOMapper) {
+    public ClienteService(ClienteRepository clienteRepository, ClienteDTOMapper clienteDTOMapper, ReservaRepository reservaRepository) {
         this.clienteRepository = clienteRepository;
         this.clienteDTOMapper = clienteDTOMapper;
+        this.reservaRepository = reservaRepository;
     }
 
     //Lista todos os clientes
@@ -50,7 +55,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     public Cliente addResource(ClienteDTO clienteDTO) {
         var cliente = new Cliente();
         BeanUtils.copyProperties(clienteDTO, cliente);
-        newDataValidation(cliente);
+        dataValidation(cliente);
         return clienteRepository.save(cliente);
     }
 
@@ -60,6 +65,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
         var cliente = clienteRepository.findById(id);
         if (!cliente.isPresent())
             throw new ResourceNotFoundException(id);
+        dataValidation(cliente.get());
         clienteRepository.delete(cliente.get());
     }
 
@@ -69,7 +75,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
         var oldCliente = clienteRepository.getReferenceById(id);
         try {
             updateDataResource(oldCliente, newCliente);
-            newDataValidation(oldCliente);
+            dataValidation(oldCliente);
             return clienteRepository.save(oldCliente);
         } catch (EntityNotFoundException error) {
             throw new ResourceNotFoundException(id);
@@ -85,7 +91,10 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     }
 
     //Verifica se os dados inseridos são válidos
-    public void newDataValidation(Cliente newCliente) {
+    @Override
+    public void dataValidation(Cliente newCliente) {
+        if (reservaRepository.findByCliente(newCliente).isPresent())
+            throw new DataIntegrityException("O cliente não pode ser excluído pois está vinculado a uma reserva.");
         var clienteByCpf = clienteRepository.findByCpf(newCliente.getCpf());
         if (clienteByCpf.isPresent() && !clienteByCpf.get().getId().equals(newCliente.getId()))
             throw new ExistingFieldException("CPF já cadastrado");

@@ -11,4 +11,5 @@ public interface ServiceCRUD<T, C> {
     void remResource(UUID id);
     C updateResource(UUID id, T t);
     void updateDataResource(C oldResource, T newResource);
+    void dataValidation(C c);
 }

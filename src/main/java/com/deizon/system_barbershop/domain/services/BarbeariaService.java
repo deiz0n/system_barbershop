@@ -85,7 +85,8 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     }
 
     //Verifica se os dados inseridos são válidos
-    private void dataValidation(Barbearia newBarbeariaa) {
+    @Override
+    public void dataValidation(Barbearia newBarbeariaa) {
         var barbeariaByNome = barbeariaRepository.findByNome(newBarbeariaa.getNome());
         if (barbeariaByNome.isPresent() && !barbeariaByNome.get().getId().equals(newBarbeariaa.getId()))
             throw new ExistingFieldException("Nome já vinculado a outra barbeária");
