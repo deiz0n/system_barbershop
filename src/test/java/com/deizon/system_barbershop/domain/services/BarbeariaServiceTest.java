@@ -26,7 +26,7 @@ class BarbeariaServiceTest {
     public static final UUID ID = UUID.fromString("261254e5-6683-447c-9c2a-43e153339773");
     public static final String NOME = "barbearia 1";
     public static final String CNPJ = "84623997000126";
-    public static final Integer INDEX = 1;
+    public static final Integer INDEX = 0;
 
     @InjectMocks
     private BarbeariaService service;
@@ -48,12 +48,12 @@ class BarbeariaServiceTest {
     @Test
     void whenFindAllThenReturnListOfBarbeariaDTO() {
         when(repository.findAll()).thenReturn(List.of(barbearia));
+        when(mapper.apply(any())).thenReturn(barbeariaDTO);
 
         List<BarbeariaDTO> response = service.findAll();
-        response.add(barbeariaDTO);
 
         assertNotNull(response);
-        assertEquals(2, response.size());
+        assertEquals(1, response.size());
         assertEquals(BarbeariaDTO.class, response.get(INDEX).getClass());
 
         assertEquals(ID, response.get(INDEX).getId());
@@ -62,11 +62,26 @@ class BarbeariaServiceTest {
     }
 
     @Test
+    void whenFindByIDThenReturnBarbeariaDTO() {
+        when(repository.findById(any(UUID.class))).thenReturn(optional);
+        when(mapper.apply(barbearia)).thenReturn(barbeariaDTO);
+
+        BarbeariaDTO response = service.findByID(ID);
+
+        assertNotNull(response);
+        assertEquals(BarbeariaDTO.class, response.getClass());
+
+        assertEquals(ID, response.getId());
+        assertEquals(NOME, response.getNome());
+        assertEquals(CNPJ, response.getCnpj());
+    }
+
+    @Test
     void whenFindByIDThenReturnResourceNotFoundException() {
         when(repository.findById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
 
         try {
-            var response = service.findByID(ID);
+            BarbeariaDTO response = service.findByID(ID);
         } catch (Exception e) {
             assertEquals(ResourceNotFoundException.class, e.getClass());
             assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
