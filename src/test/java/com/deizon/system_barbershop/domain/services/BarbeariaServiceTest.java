@@ -89,7 +89,17 @@ class BarbeariaServiceTest {
     }
 
     @Test
-    void addResource() {
+    void whenAddResourceThenReturnBarbearia() {
+        when(repository.save(any())).thenReturn(barbearia);
+
+        Barbearia response = service.addResource(barbeariaDTO);
+
+        assertNotNull(response);
+        assertEquals(Barbearia.class, response.getClass());
+
+        assertEquals(ID, response.getId());
+        assertEquals(NOME, response.getNome());
+        assertEquals(CNPJ, response.getCnpj());
     }
 
     @Test
