@@ -4,6 +4,7 @@ import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,15 +13,17 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class BarbeariaServiceTest {
 
-    public static final UUID ID = UUID.randomUUID();
+    public static final UUID ID = UUID.fromString("261254e5-6683-447c-9c2a-43e153339773");
     public static final String NOME = "barbearia 1";
     public static final String CNPJ = "84623997000126";
     public static final Integer INDEX = 1;
@@ -34,6 +37,7 @@ class BarbeariaServiceTest {
 
     private Barbearia barbearia;
     private BarbeariaDTO barbeariaDTO;
+    private Optional<Barbearia> optional;
 
     @BeforeEach
     void setUp() {
@@ -42,7 +46,7 @@ class BarbeariaServiceTest {
     }
 
     @Test
-    void whenFindAllThenReturnListOfUsers() {
+    void whenFindAllThenReturnListOfBarbeariaDTO() {
         when(repository.findAll()).thenReturn(List.of(barbearia));
 
         List<BarbeariaDTO> response = service.findAll();
@@ -58,7 +62,15 @@ class BarbeariaServiceTest {
     }
 
     @Test
-    void findByID() {
+    void whenFindByIDThenReturnResourceNotFoundException() {
+        when(repository.findById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
+
+        try {
+            var response = service.findByID(ID);
+        } catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
+        }
     }
 
     @Test
@@ -82,5 +94,9 @@ class BarbeariaServiceTest {
                 ,NOME
                 ,CNPJ
                 ,List.of());
+        optional = Optional.of(new Barbearia(ID
+                ,NOME
+                ,CNPJ
+                ,List.of()));
     }
 }

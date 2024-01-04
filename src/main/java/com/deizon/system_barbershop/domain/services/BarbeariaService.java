@@ -62,7 +62,7 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
         var barbearia = barbeariaRepository.findById(id);
         if (!barbearia.isPresent())
             throw new ResourceNotFoundException(id);
-        barbeariaRepository.delete(barbearia.get());
+        barbeariaRepository.deleteById(barbearia.get().getId());
     }
 
     //Atualiza os dados da barbearia
