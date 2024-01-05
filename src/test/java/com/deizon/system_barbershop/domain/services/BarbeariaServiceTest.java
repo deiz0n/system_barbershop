@@ -156,7 +156,18 @@ class BarbeariaServiceTest {
     }
 
     @Test
-    void updateDataResource() {
+    void whenUpdateResourceThenReturnBarbearia() {
+        when(repository.getReferenceById(any(UUID.class))).thenReturn(barbearia);
+        when(repository.save(any())).thenReturn(barbearia);
+
+        Barbearia response = service.updateResource(ID, barbeariaDTO);
+
+        assertNotNull(response);
+        assertEquals(Barbearia.class, response.getClass());
+
+        assertEquals(ID, response.getId());
+        assertEquals(NOME, response.getNome());
+        assertEquals(CNPJ, response.getCnpj());
     }
 
     private void startBarbearia() {
