@@ -4,6 +4,7 @@ import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper;
+import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,6 +101,22 @@ class BarbeariaServiceTest {
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
         assertEquals(CNPJ, response.getCnpj());
+    }
+
+    @Test
+    void whenUpdateResourceThenExistingNomeException() {
+        when(repository.findByNome(anyString())).thenReturn(optional);
+        when(repository.save(any())).thenReturn(barbearia);
+
+        try {
+            barbearia.setId(UUID.randomUUID());
+            barbearia.setCnpj("32898944000114");
+            service.dataValidation(barbearia);
+            Barbearia response = service.addResource(barbeariaDTO);
+        } catch (Exception e) {
+            assertEquals(ExistingFieldException.class, e.getClass());
+            assertEquals("Nome já vinculado a outra barbeária", e.getMessage());
+        }
     }
 
     @Test
