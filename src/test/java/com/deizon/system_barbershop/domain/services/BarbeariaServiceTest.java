@@ -6,6 +6,7 @@ import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -168,6 +169,19 @@ class BarbeariaServiceTest {
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
         assertEquals(CNPJ, response.getCnpj());
+    }
+
+    @Test
+    void whenUpdateResourceThenReturnNotFoundException() {
+        when(repository.getReferenceById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
+        when(repository.save(any())).thenReturn(barbearia);
+
+        try {
+            Barbearia response = service.updateResource(ID, barbeariaDTO);
+        } catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
+        }
     }
 
     private void startBarbearia() {
