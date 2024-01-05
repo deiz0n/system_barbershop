@@ -111,6 +111,18 @@ class BarbeariaServiceTest {
     }
 
     @Test
+    void whenRemResourceThenReturnRescourceNotFoundException() {
+        when(repository.findById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
+
+        try {
+            service.remResource(ID);
+        } catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
+        }
+    }
+
+    @Test
     void updateDataResource() {
     }
 
