@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class BarbeariaServiceTest {
@@ -103,7 +103,11 @@ class BarbeariaServiceTest {
     }
 
     @Test
-    void remResource() {
+    void whenRemResourceTheReturnVoid() {
+        when(repository.findById(any(UUID.class))).thenReturn(optional);
+        doNothing().when(repository).deleteById(any(UUID.class));
+        service.remResource(ID);
+        verify(repository, times(1)).deleteById(any(UUID.class));
     }
 
     @Test
