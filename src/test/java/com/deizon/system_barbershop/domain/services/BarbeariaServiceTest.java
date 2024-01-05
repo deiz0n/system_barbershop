@@ -104,7 +104,7 @@ class BarbeariaServiceTest {
     }
 
     @Test
-    void whenUpdateResourceThenExistingNomeException() {
+    void whenAddResourceThenExistingNomeException() {
         when(repository.findByNome(anyString())).thenReturn(optional);
         when(repository.save(any())).thenReturn(barbearia);
 
@@ -116,6 +116,22 @@ class BarbeariaServiceTest {
         } catch (Exception e) {
             assertEquals(ExistingFieldException.class, e.getClass());
             assertEquals("Nome já vinculado a outra barbeária", e.getMessage());
+        }
+    }
+
+    @Test
+    void whenAddResourceThenExistingCnpjException() {
+        when(repository.findByCnpj(anyString())).thenReturn(optional);
+        when(repository.save(any())).thenReturn(barbearia);
+
+        try {
+            barbearia.setId(UUID.randomUUID());
+            barbearia.setNome("Teste Teste");
+            service.dataValidation(barbearia);
+            Barbearia response = service.addResource(barbeariaDTO);
+        } catch (Exception e) {
+            assertEquals(ExistingFieldException.class, e.getClass());
+            assertEquals("CNPJ já vinculado a outra barbeária", e.getMessage());
         }
     }
 
