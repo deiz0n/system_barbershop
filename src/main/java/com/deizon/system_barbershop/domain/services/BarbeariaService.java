@@ -25,13 +25,10 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
 
     private BarbeariaDTOMapper barbeariaDTOMapper;
 
-    private ModelMapper mapper;
-
     @Autowired
-    public BarbeariaService(BarbeariaRepository barbeariaRepository, BarbeariaDTOMapper barbeariaDTOMapper, ModelMapper mapper) {
+    public BarbeariaService(BarbeariaRepository barbeariaRepository, BarbeariaDTOMapper barbeariaDTOMapper) {
         this.barbeariaRepository = barbeariaRepository;
         this.barbeariaDTOMapper = barbeariaDTOMapper;
-        this.mapper = mapper;
     }
 
     //Lista todas as barbeárias
