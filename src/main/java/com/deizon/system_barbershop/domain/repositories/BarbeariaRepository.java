@@ -9,9 +9,9 @@ import java.util.UUID;
 
 public interface BarbeariaRepository extends JpaRepository<Barbearia, UUID> {
 
-    Optional<Barbearia> findByNome(String nome);
+    Optional<Barbearia> findFirstByNome(String nome);
 
-    Optional<Barbearia> findByCnpj(String cnpj);
+    Optional<Barbearia> findFirstByCnpj(String cnpj);
 
     String getDataByReserva(UUID id);
 

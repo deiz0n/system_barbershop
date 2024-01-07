@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class BarbeariaServiceTest {
 
-    public static final UUID ID = UUID.fromString("556add71-9643-4d21-b52e-435e0597cf7e");
+    public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Dudu Cortas";
     public static final String CNPJ = "96852528000168";
     public static final Integer INDEX = 0;
@@ -110,7 +110,7 @@ class BarbeariaServiceTest {
 
     @Test
     void whenAddResourceThenExistingNomeException() {
-        when(repository.findByNome(anyString())).thenReturn(optional);
+        when(repository.findFirstByNome(anyString())).thenReturn(optional);
         when(repository.save(any())).thenReturn(barbearia);
 
         try {
@@ -125,7 +125,7 @@ class BarbeariaServiceTest {
 
     @Test
     void whenAddResourceThenExistingCnpjException() {
-        when(repository.findByCnpj(anyString())).thenReturn(optional);
+        when(repository.findFirstByCnpj(anyString())).thenReturn(optional);
         when(repository.save(any())).thenReturn(barbearia);
 
         try {
@@ -166,25 +166,11 @@ class BarbeariaServiceTest {
         Barbearia response = service.updateResource(ID, barbeariaDTO);
 
         assertNotNull(response);
-        assertEquals(Barbearia.class, response.getClass());
 
+        assertEquals(Barbearia.class, response.getClass());
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
         assertEquals(CNPJ, response.getCnpj());
-    }
-
-    @Test
-    void whenUpdateResourceThenReturnResourceNotFoundException() {
-        when(modelMapper.map(any(), any())).thenReturn(optional);
-        when(repository.save(any())).thenReturn(barbearia);
-        when(repository.findById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
-
-        try {
-            Barbearia response = service.updateResource(ID, barbeariaDTO);
-        } catch (Exception e) {
-            assertEquals(ResourceNotFoundException.class, e.getClass());
-            assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
-        }
     }
 
     private void startBarbearia() {

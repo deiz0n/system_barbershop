@@ -73,11 +73,14 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     //Atualiza os dados da barbearia
     @Override
     public Barbearia updateResource(UUID id, BarbeariaDTO barbeariaDTO) {
-        findByID(id);
-        barbeariaDTO.setId(id);
-        var barbearia = mapper.map(barbeariaDTO, Barbearia.class);
-        dataValidation(barbearia);
-        return barbeariaRepository.save(barbearia);
+       var oldBarbearia = barbeariaRepository.getReferenceById(id);
+       try {
+           BeanUtils.copyProperties(barbeariaDTO, oldBarbearia, "id");
+           dataValidation(oldBarbearia);
+           return barbeariaRepository.save(oldBarbearia);
+       } catch (EntityNotFoundException error) {
+           throw new ResourceNotFoundException(id);
+       }
     }
 
     @Override
@@ -89,10 +92,10 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Barbearia newBarbeariaa) {
-        var barbeariaByNome = barbeariaRepository.findByNome(newBarbeariaa.getNome());
+        var barbeariaByNome = barbeariaRepository.findFirstByNome(newBarbeariaa.getNome());
         if (barbeariaByNome.isPresent() && !barbeariaByNome.get().getId().equals(newBarbeariaa.getId()))
             throw new ExistingFieldException("Nome já vinculado a outra barbeária");
-        var barbeariaByCnpj = barbeariaRepository.findByCnpj(newBarbeariaa.getCnpj());
+        var barbeariaByCnpj = barbeariaRepository.findFirstByCnpj(newBarbeariaa.getCnpj());
         if (barbeariaByCnpj.isPresent() && !barbeariaByCnpj.get().getId().equals(newBarbeariaa.getId()))
           throw new ExistingFieldException("CNPJ já vinculado a outra barbeária");
     }
