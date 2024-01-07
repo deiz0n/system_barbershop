@@ -7,9 +7,11 @@ import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +25,13 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
 
     private BarbeariaDTOMapper barbeariaDTOMapper;
 
+    private ModelMapper mapper;
+
     @Autowired
-    public BarbeariaService(BarbeariaRepository barbeariaRepository, BarbeariaDTOMapper barbeariaDTOMapper) {
+    public BarbeariaService(BarbeariaRepository barbeariaRepository, BarbeariaDTOMapper barbeariaDTOMapper, ModelMapper mapper) {
         this.barbeariaRepository = barbeariaRepository;
         this.barbeariaDTOMapper = barbeariaDTOMapper;
+        this.mapper = mapper;
     }
 
     //Lista todas as barbeárias
@@ -68,14 +73,11 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
     //Atualiza os dados da barbearia
     @Override
     public Barbearia updateResource(UUID id, BarbeariaDTO barbeariaDTO) {
-        var oldCliente = barbeariaRepository.getReferenceById(id);
-        try {
-            updateDataResource(oldCliente, barbeariaDTO);
-            dataValidation(oldCliente);
-            return barbeariaRepository.save(oldCliente);
-        } catch (EntityNotFoundException error) {
-            throw new ResourceNotFoundException(id);
-        }
+        findByID(id);
+        barbeariaDTO.setId(id);
+        var barbearia = mapper.map(barbeariaDTO, Barbearia.class);
+        dataValidation(barbearia);
+        return barbeariaRepository.save(barbearia);
     }
 
     @Override

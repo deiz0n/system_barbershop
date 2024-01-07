@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -25,9 +27,9 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class BarbeariaServiceTest {
 
-    public static final UUID ID = UUID.fromString("261254e5-6683-447c-9c2a-43e153339773");
-    public static final String NOME = "barbearia 1";
-    public static final String CNPJ = "84623997000126";
+    public static final UUID ID = UUID.fromString("556add71-9643-4d21-b52e-435e0597cf7e");
+    public static final String NOME = "Dudu Cortas";
+    public static final String CNPJ = "96852528000168";
     public static final Integer INDEX = 0;
 
     @InjectMocks
@@ -36,6 +38,8 @@ class BarbeariaServiceTest {
     private BarbeariaRepository repository;
     @Mock
     private BarbeariaDTOMapper mapper;
+    @Mock
+    private ModelMapper modelMapper;
 
     private Barbearia barbearia;
     private BarbeariaDTO barbeariaDTO;
@@ -169,19 +173,19 @@ class BarbeariaServiceTest {
         assertEquals(CNPJ, response.getCnpj());
     }
 
-//    @Test
-//    void whenUpdateResourceThenReturnNotFoundException() {
-//        when(repository.getReferenceById(any(UUID.class))).thenReturn(barbearia);
-//        when(repository.save(any())).thenReturn(barbearia);
-//
-//        try {
-//            barbearia.setId(UUID.randomUUID());
-//            Barbearia response = service.updateResource(ID, barbeariaDTO);
-//        } catch (Exception e) {
-//            assertEquals(ResourceNotFoundException.class, e.getClass());
-//            assertEquals(String.format("O . com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
-//        }
-//    }
+    @Test
+    void whenUpdateResourceThenReturnResourceNotFoundException() {
+        when(modelMapper.map(any(), any())).thenReturn(optional);
+        when(repository.save(any())).thenReturn(barbearia);
+        when(repository.findById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
+
+        try {
+            Barbearia response = service.updateResource(ID, barbeariaDTO);
+        } catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
+        }
+    }
 
     private void startBarbearia() {
         barbearia = new Barbearia(ID
