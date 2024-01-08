@@ -74,7 +74,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     public Cliente updateResource(UUID id, ClienteDTO newCliente) {
         var oldCliente = clienteRepository.getReferenceById(id);
         try {
-            updateDataResource(oldCliente, newCliente);
+            BeanUtils.copyProperties(newCliente, oldCliente, "id");
             dataValidation(oldCliente);
             return clienteRepository.save(oldCliente);
         } catch (EntityNotFoundException error) {
@@ -95,13 +95,13 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     public void dataValidation(Cliente newCliente) {
         if (reservaRepository.findByCliente(newCliente).isPresent())
             throw new DataIntegrityException("O cliente não pode ser excluído pois está vinculado a uma reserva.");
-        var clienteByCpf = clienteRepository.findByCpf(newCliente.getCpf());
+        var clienteByCpf = clienteRepository.findFirstByCpf(newCliente.getCpf());
         if (clienteByCpf.isPresent() && !clienteByCpf.get().getId().equals(newCliente.getId()))
             throw new ExistingFieldException("CPF já cadastrado");
-        var clienteByEmail = clienteRepository.findByEmail(newCliente.getEmail());
+        var clienteByEmail = clienteRepository.findFirstByEmail(newCliente.getEmail());
         if (clienteByEmail.isPresent() && !clienteByEmail.get().getId().equals(newCliente.getId()))
             throw new ExistingFieldException("Email já cadastrado");
-        var clienteByTelefone = clienteRepository.findByTelefone(newCliente.getTelefone());
+        var clienteByTelefone = clienteRepository.findFirstByTelefone(newCliente.getTelefone());
         if (clienteByTelefone.isPresent() && !clienteByTelefone.get().getId().equals(newCliente.getId()))
             throw new ExistingFieldException("Telefone já cadastrado");
     }
