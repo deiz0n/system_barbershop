@@ -6,14 +6,11 @@ import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -38,8 +35,6 @@ class BarbeariaServiceTest {
     private BarbeariaRepository repository;
     @Mock
     private BarbeariaDTOMapper mapper;
-    @Mock
-    private ModelMapper modelMapper;
 
     private Barbearia barbearia;
     private BarbeariaDTO barbeariaDTO;

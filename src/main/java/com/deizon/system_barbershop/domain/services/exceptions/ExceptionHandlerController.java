@@ -12,7 +12,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.Instant;
 
 @ControllerAdvice
-public class ExceptionHandlingController {
+public class ExceptionHandlerController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> resourceNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
