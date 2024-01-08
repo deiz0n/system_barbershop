@@ -77,7 +77,7 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     public Horario updateResource(UUID id, HorarioDTO newHorario) {
         var oldHorario = horarioRepository.getReferenceById(id);
         try {
-            updateDataResource(oldHorario, newHorario);
+            BeanUtils.copyProperties(newHorario, oldHorario, "id");
             dataValidation(oldHorario);
             return horarioRepository.save(oldHorario);
         } catch (EntityNotFoundException error) {
