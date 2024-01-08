@@ -111,7 +111,17 @@ class BarbeariaControllerTest {
     }
 
     @Test
-    void updateBarbearia() {
+    void whenUpdateBarbeariaThenReturnOk() {
+        when(service.updateResource(any(UUID.class), any())).thenReturn(barbearia);
+
+        ResponseEntity<?> response = controller.updateBarbearia(ID, barbeariaDTO);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Barbearia.class, response.getBody().getClass());
     }
 
     private void startBarbearia() {
