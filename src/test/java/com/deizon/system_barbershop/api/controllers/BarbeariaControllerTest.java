@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class BarbeariaControllerTest {
@@ -97,7 +97,17 @@ class BarbeariaControllerTest {
     }
 
     @Test
-    void deleteBarbearia() {
+    void whenDeleteBarbeariaThenReturnNoContent() {
+        doNothing().when(service).remResource(any(UUID.class));
+
+        ResponseEntity<?> response = controller.deleteBarbearia(ID);
+
+        assertNotNull(response);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+
+        verify(service, times(1)).remResource(any(UUID.class));
     }
 
     @Test
