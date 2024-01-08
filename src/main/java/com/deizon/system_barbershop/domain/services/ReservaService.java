@@ -77,7 +77,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     public Reserva updateResource(UUID id, ReservaDTO newReserva) {
         var reserva = reservaRepository.getReferenceById(id);
         try {
-            updateDataResource(reserva, newReserva);
+            BeanUtils.copyProperties(newReserva, reserva, "id");
             dataValidation(reserva);
             return reservaRepository.save(reserva);
         } catch (EntityNotFoundException error) {
@@ -94,7 +94,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Reserva newReserva) {
-        var reservaByHorario = reservaRepository.findByHorario(newReserva.getHorario());
+        var reservaByHorario = reservaRepository.findFirstByHorario(newReserva.getHorario());
         if (reservaByHorario.isPresent())
             throw new DataIntegrityException("O horário já está vinculado a uma reserva");
     }

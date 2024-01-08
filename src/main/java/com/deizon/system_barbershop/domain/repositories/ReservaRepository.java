@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
 
-    Optional<Reserva> findByCliente(Cliente cliente);
-    Optional<Reserva> findByHorario(Horario horario);
+    Optional<Reserva> findFirstByCliente(Cliente cliente);
+    Optional<Reserva> findFirstByHorario(Horario horario);
 
 }

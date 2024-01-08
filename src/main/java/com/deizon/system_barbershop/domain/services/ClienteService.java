@@ -93,7 +93,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Cliente newCliente) {
-        if (reservaRepository.findByCliente(newCliente).isPresent())
+        if (reservaRepository.findFirstByCliente(newCliente).isPresent())
             throw new DataIntegrityException("O cliente não pode ser excluído pois está vinculado a uma reserva.");
         var clienteByCpf = clienteRepository.findFirstByCpf(newCliente.getCpf());
         if (clienteByCpf.isPresent() && !clienteByCpf.get().getId().equals(newCliente.getId()))

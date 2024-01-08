@@ -94,7 +94,7 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Horario newHorario) {
-        if (reservaRepository.findByHorario(newHorario).isPresent())
+        if (reservaRepository.findFirstByHorario(newHorario).isPresent())
             throw new DataIntegrityException("O horário não pode ser excluído pois está vinculado a uma reserva.");
         var horarioByBarbearia = horarioRepository.findByBarbearia(newHorario.getBarbearia());
         if (horarioByBarbearia.isPresent() && !horarioByBarbearia.get().getId().equals(newHorario.getId())) { //Verifica se o horário está vinculado a uma barbeária
