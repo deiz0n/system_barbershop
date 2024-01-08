@@ -3,6 +3,8 @@ package com.deizon.system_barbershop.api.controllers;
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.services.BarbeariaService;
+import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
+import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -81,7 +83,17 @@ class BarbeariaControllerTest {
     }
 
     @Test
-    void createBarbearia() {
+    void whenCreateBarbeariaThenReturnCreated() {
+        when(service.addResource(any())).thenReturn(barbearia);
+
+        ResponseEntity<?> response = controller.createBarbearia(barbeariaDTO);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Barbearia.class, response.getBody().getClass());
     }
 
     @Test
