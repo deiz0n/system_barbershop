@@ -41,7 +41,16 @@ class ExceptionHandlingControllerTest {
     }
 
     @Test
-    void existingField() {
+    void whenExistingFieldThenReturnConflict() {
+        ResponseEntity<?> response = handler.existingField(
+                new ExistingFieldException("Campo já cadastrado"), new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Error.class, response.getBody().getClass());
     }
 
     @Test
