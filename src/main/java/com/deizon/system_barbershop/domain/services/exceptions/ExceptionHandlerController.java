@@ -51,7 +51,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> dateInvalid(HttpServletRequest request) {
+    public ResponseEntity<?> dataInvalid(HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
@@ -62,7 +62,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(ArgumentNotValidException.class)
-    public ResponseEntity<?> dateShort(ArgumentNotValidException exception, HttpServletRequest request) {
+    public ResponseEntity<?> dataShort(ArgumentNotValidException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,

@@ -63,7 +63,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenDateInvalidThenReturnBadRequest() {
-        ResponseEntity<?> response = handler.dateInvalid(new MockHttpServletRequest());
+        ResponseEntity<?> response = handler.dataInvalid(new MockHttpServletRequest());
 
         assertNotNull(response);
         assertNotNull(response.getBody());
@@ -74,7 +74,16 @@ class ExceptionHandlingControllerTest<T> {
     }
 
     @Test
-    void dateShort() {
+    void whenDataShortThenReturnBadRequest() {
+        ResponseEntity<?> response = handler.dataShort(
+                new ArgumentNotValidException("Intervalo de tempo muito curto. Tente novamente"), new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Error.class, response.getBody().getClass());
     }
 
     @Test
