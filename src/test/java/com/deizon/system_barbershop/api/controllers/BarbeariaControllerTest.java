@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -62,7 +63,21 @@ class BarbeariaControllerTest {
     }
 
     @Test
-    void getBarbearia() {
+    void whenGetBarbeariaThenReturnOk() {
+        when(service.findByID(any(UUID.class))).thenReturn(barbeariaDTO);
+
+        ResponseEntity<BarbeariaDTO> response = controller.getBarbearia(ID);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(BarbeariaDTO.class, response.getBody().getClass());
+
+        assertEquals(ID,response.getBody().getId());
+        assertEquals(NOME,response.getBody().getNome());
+        assertEquals(CNPJ,response.getBody().getCnpj());
     }
 
     @Test
