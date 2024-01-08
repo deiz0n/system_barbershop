@@ -17,9 +17,6 @@ import java.util.UUID;
 @RequestMapping("/barbearias")
 public class BarbeariaController {
 
-    @Autowired
-    private HorarioRepository horarioRepository;
-
     private BarbeariaService barbeariaService;
 
     @Autowired
