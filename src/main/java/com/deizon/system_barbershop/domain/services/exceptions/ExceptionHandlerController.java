@@ -37,7 +37,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> argumentInvalid(MethodArgumentNotValidException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> argumentInvalid(MethodArgumentNotValidException exception, HttpServletRequest request) {
         var stringBuilder = new StringBuilder();
         stringBuilder.append(exception.getFieldError().getField().toUpperCase());
         stringBuilder.append(" inválido.");

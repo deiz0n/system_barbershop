@@ -1,27 +1,36 @@
 package com.deizon.system_barbershop.domain.services.exceptions;
 
+import com.deizon.system_barbershop.domain.models.Cliente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.lang.reflect.Parameter;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 
 @SpringBootTest
 class ExceptionHandlingControllerTest<T> {
 
     public static final UUID ID = UUID.fromString("4329cedf-4521-467a-a0ad-e23fad5f638d");
+
+    private BindingResult result;
 
     @InjectMocks
     private ExceptionHandlerController handler;
@@ -29,6 +38,7 @@ class ExceptionHandlingControllerTest<T> {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        this.result = new BeanPropertyBindingResult(new Object(), "object");
     }
 
     @Test
@@ -59,11 +69,25 @@ class ExceptionHandlingControllerTest<T> {
         assertEquals("Campo já cadastrado", response.getBody().getError());
     }
 
-//    @Test
-//    void whenArgumentInvalidThenReturnBadRequest() {
-//        ResponseEntity<?> response = handler.argumentInvalid(
-//                new MethodArgumentNotValidException(ID), new MockHttpServletRequest());
-//    }
+    @Test
+    void whenArgumentInvalidThenReturnBadRequest() {
+        this.result.recordFieldValue("cpf", Cliente.class, "12345678910");
+        this.result.addError(new FieldError("Cliente", "cpf", "CPF inválido. Tente novamente!"));
+
+        MethodParameter methodParameter = mock(MethodParameter.class);
+        when(methodParameter.getParameter()).thenReturn(mock(Parameter.class));
+
+        ResponseEntity<Error> response = handler.argumentInvalid(
+                new MethodArgumentNotValidException(methodParameter, this.result), new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Error.class, response.getBody().getClass());
+        assertEquals("CPF inválido.", response.getBody().getError());
+    }
 
     @Test
     void whenDateInvalidThenReturnBadRequest() {
