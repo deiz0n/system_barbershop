@@ -15,7 +15,7 @@ import java.time.Instant;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> resourceNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> resourceNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.NOT_FOUND,
@@ -26,7 +26,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(ExistingFieldException.class)
-    public ResponseEntity<?> existingField(ExistingFieldException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> existingField(ExistingFieldException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.CONFLICT,
@@ -51,7 +51,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> dataInvalid(HttpServletRequest request) {
+    public ResponseEntity<Error> dataInvalid(HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
@@ -62,8 +62,8 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(ArgumentNotValidException.class)
-    public ResponseEntity<?> dataShort(ArgumentNotValidException exception, HttpServletRequest request) {
-        var error = new Error(
+    public ResponseEntity<Error> dataShort(ArgumentNotValidException exception, HttpServletRequest request) {
+            Error error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
                 exception.getMessage(),
@@ -91,7 +91,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(DataIntegrityException.class)
-    public ResponseEntity<?> dataIntegrity(DataIntegrityException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> dataIntegrity(DataIntegrityException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.CONFLICT,

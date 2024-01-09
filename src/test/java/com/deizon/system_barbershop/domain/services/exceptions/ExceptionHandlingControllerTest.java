@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +32,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenResourceNotFoundThenReturnNotFound() {
-        ResponseEntity<?> response = handler.resourceNotFound(
+        ResponseEntity<Error> response = handler.resourceNotFound(
                 new ResourceNotFoundException(ID), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -40,11 +41,12 @@ class ExceptionHandlingControllerTest<T> {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
+        assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), response.getBody().getError());
     }
 
     @Test
     void whenExistingFieldThenReturnConflict() {
-        ResponseEntity<?> response = handler.existingField(
+        ResponseEntity<Error> response = handler.existingField(
                 new ExistingFieldException("Campo já cadastrado"), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -53,6 +55,7 @@ class ExceptionHandlingControllerTest<T> {
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
+        assertEquals("Campo já cadastrado", response.getBody().getError());
     }
 
 //    @Test
@@ -63,7 +66,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenDateInvalidThenReturnBadRequest() {
-        ResponseEntity<?> response = handler.dataInvalid(new MockHttpServletRequest());
+        ResponseEntity<Error> response = handler.dataInvalid(new MockHttpServletRequest());
 
         assertNotNull(response);
         assertNotNull(response.getBody());
@@ -71,11 +74,12 @@ class ExceptionHandlingControllerTest<T> {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
+        assertEquals("O horário informado possui formato inválido.", response.getBody().getError());
     }
 
     @Test
     void whenDataShortThenReturnBadRequest() {
-        ResponseEntity<?> response = handler.dataShort(
+        ResponseEntity<Error> response = handler.dataShort(
                 new ArgumentNotValidException("Intervalo de tempo muito curto. Tente novamente"), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -84,13 +88,35 @@ class ExceptionHandlingControllerTest<T> {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
+        assertEquals("Intervalo de tempo muito curto. Tente novamente", response.getBody().getError());
     }
 
-    @Test
-    void contraintVioletion() {
-    }
+//    @Test
+//    void whenContraintVioletionThenReturnBadRequest() {
+//        ResponseEntity<?> response = handler.contraintVioletion(
+//                new SQLIntegrityConstraintViolationException(), new MockHttpServletRequest());
+//
+//
+//
+//        assertNotNull(response);
+//        assertNotNull(response.getBody());
+//
+//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+//        assertEquals(ResponseEntity.class, response.getClass());
+//        assertEquals(Error.class, response.getBody().getClass());
+//    }
 
     @Test
-    void dataIntegrity() {
+    void whenDataIntegrityThenReturnConflict() {
+        ResponseEntity<Error> response = handler.dataIntegrity(
+                new DataIntegrityException(""), new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.CONFLICT, response.getBody().getHttpStatus());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Error.class, response.getBody().getClass());
+        assertEquals("", response.getBody().getError());
     }
 }
