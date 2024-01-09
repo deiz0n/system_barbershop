@@ -16,6 +16,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 @SpringBootTest
 class ExceptionHandlingControllerTest<T> {
@@ -91,20 +92,19 @@ class ExceptionHandlingControllerTest<T> {
         assertEquals("Intervalo de tempo muito curto. Tente novamente", response.getBody().getError());
     }
 
-//    @Test
-//    void whenContraintVioletionThenReturnBadRequest() {
-//        ResponseEntity<?> response = handler.contraintVioletion(
-//                new SQLIntegrityConstraintViolationException(), new MockHttpServletRequest());
-//
-//
-//
-//        assertNotNull(response);
-//        assertNotNull(response.getBody());
-//
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertEquals(ResponseEntity.class, response.getClass());
-//        assertEquals(Error.class, response.getBody().getClass());
-//    }
+    @Test
+    void whenContraintVioletionThenReturnBadRequest() {
+        ResponseEntity<Error> response = handler.contraintVioletion(
+                new SQLIntegrityConstraintViolationException("FK40agr0nhu8t21hlb0s4bifbsp"), new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Error.class, response.getBody().getClass());
+        assertEquals("O horário informado não foi encontrado.", response.getBody().getError());
+    }
 
     @Test
     void whenDataIntegrityThenReturnConflict() {

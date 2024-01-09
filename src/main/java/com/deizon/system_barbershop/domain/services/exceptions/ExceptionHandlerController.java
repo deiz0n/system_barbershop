@@ -73,7 +73,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<?> contraintVioletion(SQLIntegrityConstraintViolationException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> contraintVioletion(SQLIntegrityConstraintViolationException exception, HttpServletRequest request) {
         var msg = new String();
         if (exception.getMessage().contains("FK40agr0nhu8t21hlb0s4bifbsp")) {
             msg = "O horário informado não foi encontrado.";
