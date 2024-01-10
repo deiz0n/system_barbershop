@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
+import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.services.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class ClienteController {
 
     //Retorna um cliente comforme id
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCliente(@PathVariable UUID id) {
+    public ResponseEntity<ClienteDTO> getCliente(@PathVariable UUID id) {
         var cliente = clienteService.findByID(id);
         return ResponseEntity.ok().body(cliente);
     }
@@ -36,7 +37,7 @@ public class ClienteController {
     //Cria um novo cliente
     @Transactional
     @PostMapping
-    public ResponseEntity<?> createCliente(@RequestBody @Valid ClienteDTO newCliente) {
+    public ResponseEntity<ClienteDTO> createCliente(@RequestBody @Valid ClienteDTO newCliente) {
         clienteService.addResource(newCliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
     }
@@ -52,8 +53,8 @@ public class ClienteController {
     //Atualiza os dados do cliente comforme id
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCliente(@PathVariable UUID id,
-                                           @RequestBody @Valid ClienteDTO newCliente) {
+    public ResponseEntity<Cliente> updateCliente(@PathVariable UUID id,
+                                                 @RequestBody @Valid ClienteDTO newCliente) {
         var cliente = clienteService.updateResource(id, newCliente);
         return ResponseEntity.ok().body(cliente);
     }
