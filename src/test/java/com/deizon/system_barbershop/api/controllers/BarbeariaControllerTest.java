@@ -2,6 +2,8 @@ package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
+import com.deizon.system_barbershop.domain.models.Horario;
+import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.services.BarbeariaService;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import org.apache.coyote.Response;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +32,7 @@ class BarbeariaControllerTest {
     public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Dudu Cortas";
     public static final String CNPJ = "96852528000168";
+    public static final Horario HORARIO = new Horario(UUID.randomUUID(), Instant.now(), Instant.now().plusSeconds(1260L), new Barbearia(), new Reserva());
     public static final Integer INDEX = 0;
 
     @InjectMocks
@@ -62,6 +66,7 @@ class BarbeariaControllerTest {
         assertEquals(ID,response.getBody().get(INDEX).getId());
         assertEquals(NOME,response.getBody().get(INDEX).getNome());
         assertEquals(CNPJ,response.getBody().get(INDEX).getCnpj());
+        assertEquals(HORARIO, response.getBody().get(INDEX).getHorarios());
     }
 
     @Test
@@ -80,13 +85,14 @@ class BarbeariaControllerTest {
         assertEquals(ID,response.getBody().getId());
         assertEquals(NOME,response.getBody().getNome());
         assertEquals(CNPJ,response.getBody().getCnpj());
+        assertEquals(HORARIO, response.getBody().getHorarios());
     }
 
     @Test
     void whenCreateBarbeariaThenReturnCreated() {
         when(service.addResource(any())).thenReturn(barbearia);
 
-        ResponseEntity<?> response = controller.createBarbearia(barbeariaDTO);
+        ResponseEntity<Barbearia> response = controller.createBarbearia(barbeariaDTO);
 
         assertNotNull(response);
         assertNotNull(response.getBody());
@@ -94,6 +100,11 @@ class BarbeariaControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Barbearia.class, response.getBody().getClass());
+
+        assertEquals(ID,response.getBody().getId());
+        assertEquals(NOME,response.getBody().getNome());
+        assertEquals(CNPJ,response.getBody().getCnpj());
+        assertEquals(HORARIO, response.getBody().getHorarios());
     }
 
     @Test
@@ -114,7 +125,7 @@ class BarbeariaControllerTest {
     void whenUpdateBarbeariaThenReturnOk() {
         when(service.updateResource(any(UUID.class), any())).thenReturn(barbearia);
 
-        ResponseEntity<?> response = controller.updateBarbearia(ID, barbeariaDTO);
+        ResponseEntity<Barbearia> response = controller.updateBarbearia(ID, barbeariaDTO);
 
         assertNotNull(response);
         assertNotNull(response.getBody());
@@ -122,21 +133,26 @@ class BarbeariaControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Barbearia.class, response.getBody().getClass());
+
+        assertEquals(ID,response.getBody().getId());
+        assertEquals(NOME,response.getBody().getNome());
+        assertEquals(CNPJ,response.getBody().getCnpj());
+        assertEquals(HORARIO, response.getBody().getHorarios());
     }
 
     private void startBarbearia() {
         barbearia = new Barbearia(ID
                 ,NOME
                 ,CNPJ
-                , List.of());
+                , List.of(HORARIO));
         barbeariaDTO = new BarbeariaDTO(ID
                 ,NOME
                 ,CNPJ
-                ,List.of());
+                ,List.of(HORARIO));
         optional = Optional.of(new Barbearia(ID
                 ,NOME
                 ,CNPJ
-                ,List.of()));
+                ,List.of(HORARIO)));
 
     }
 }

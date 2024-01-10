@@ -66,7 +66,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
         if (!cliente.isPresent())
             throw new ResourceNotFoundException(id);
         dataValidation(cliente.get());
-        clienteRepository.delete(cliente.get());
+        clienteRepository.deleteById(cliente.get().getId());
     }
 
     //Atualiza os dados do cliente

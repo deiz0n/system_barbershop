@@ -50,6 +50,7 @@ class ExceptionHandlingControllerTest<T> {
         assertNotNull(response.getBody());
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(404, response.getBody().getHttpStatus().value());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), response.getBody().getError());
@@ -64,6 +65,7 @@ class ExceptionHandlingControllerTest<T> {
         assertNotNull(response.getBody());
 
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals(409, response.getBody().getHttpStatus().value());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals("Campo já cadastrado", response.getBody().getError());
@@ -84,6 +86,7 @@ class ExceptionHandlingControllerTest<T> {
         assertNotNull(response.getBody());
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(400, response.getBody().getHttpStatus().value());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals("CPF inválido.", response.getBody().getError());
@@ -97,6 +100,7 @@ class ExceptionHandlingControllerTest<T> {
         assertNotNull(response.getBody());
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(400, response.getBody().getHttpStatus().value());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals("O horário informado possui formato inválido.", response.getBody().getError());
@@ -111,6 +115,7 @@ class ExceptionHandlingControllerTest<T> {
         assertNotNull(response.getBody());
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(400, response.getBody().getHttpStatus().value());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals("Intervalo de tempo muito curto. Tente novamente", response.getBody().getError());
@@ -125,6 +130,7 @@ class ExceptionHandlingControllerTest<T> {
         assertNotNull(response.getBody());
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(400, response.getBody().getHttpStatus().value());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals("O horário informado não foi encontrado.", response.getBody().getError());
@@ -139,6 +145,7 @@ class ExceptionHandlingControllerTest<T> {
         assertNotNull(response.getBody());
 
         assertEquals(HttpStatus.CONFLICT, response.getBody().getHttpStatus());
+        assertEquals(409, response.getBody().getHttpStatus().value());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals("", response.getBody().getError());

@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
+import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.services.BarbeariaService;
 import jakarta.validation.Valid;
@@ -41,7 +42,7 @@ public class BarbeariaController {
     //Cria uma nova barbeária
     @Transactional
     @PostMapping
-    public ResponseEntity<?> createBarbearia(@RequestBody @Valid BarbeariaDTO newBarbearia) {
+    public ResponseEntity<Barbearia> createBarbearia(@RequestBody @Valid BarbeariaDTO newBarbearia) {
         var barbearia = barbeariaService.addResource(newBarbearia);
         return ResponseEntity.status(HttpStatus.CREATED).body(barbearia);
     }
@@ -57,7 +58,7 @@ public class BarbeariaController {
     //Atualiza os dados da barbeária comforme id
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBarbearia(@PathVariable UUID id,
+    public ResponseEntity<Barbearia> updateBarbearia(@PathVariable UUID id,
                                              @RequestBody @Valid BarbeariaDTO newBarbearia) {
         var barbearia = barbeariaService.updateResource(id, newBarbearia);
         return ResponseEntity.ok().body(barbearia);

@@ -2,6 +2,8 @@ package com.deizon.system_barbershop.domain.services;
 
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
+import com.deizon.system_barbershop.domain.models.Horario;
+import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.BarbeariaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
@@ -13,9 +15,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.Instant;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,6 +28,7 @@ class BarbeariaServiceTest {
     public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Dudu Cortas";
     public static final String CNPJ = "96852528000168";
+    public static final Horario HORARIO = new Horario(UUID.randomUUID(), Instant.now(), Instant.now().plusSeconds(1260L), new Barbearia(), new Reserva());
     public static final Integer INDEX = 0;
 
     @InjectMocks
@@ -60,6 +62,7 @@ class BarbeariaServiceTest {
         assertEquals(ID, response.get(INDEX).getId());
         assertEquals(NOME, response.get(INDEX).getNome());
         assertEquals(CNPJ, response.get(INDEX).getCnpj());
+        assertEquals(HORARIO, response.get(INDEX).getHorarios().get(INDEX));
     }
 
     @Test
@@ -75,11 +78,12 @@ class BarbeariaServiceTest {
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
         assertEquals(CNPJ, response.getCnpj());
+        assertEquals(HORARIO, response.getHorarios().get(INDEX));
     }
 
     @Test
     void whenFindByIDThenReturnResourceNotFoundException() {
-        when(repository.findById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
+        when(repository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         try {
             BarbeariaDTO response = service.findByID(ID);
@@ -101,6 +105,7 @@ class BarbeariaServiceTest {
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
         assertEquals(CNPJ, response.getCnpj());
+        assertEquals(HORARIO, response.getHorarios().get(INDEX));
     }
 
     @Test
@@ -143,7 +148,7 @@ class BarbeariaServiceTest {
 
     @Test
     void whenRemResourceThenReturnRescourceNotFoundException() {
-        when(repository.findById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
+        when(repository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         try {
             service.remResource(ID);
@@ -166,6 +171,7 @@ class BarbeariaServiceTest {
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
         assertEquals(CNPJ, response.getCnpj());
+        assertEquals(HORARIO, response.getHorarios().get(INDEX));
     }
 
     @Test
@@ -203,14 +209,14 @@ class BarbeariaServiceTest {
         barbearia = new Barbearia(ID
                 ,NOME
                 ,CNPJ
-                ,List.of());
+                ,List.of(HORARIO));
         barbeariaDTO = new BarbeariaDTO(ID
                 ,NOME
                 ,CNPJ
-                ,List.of());
+                ,List.of(HORARIO));
         optional = Optional.of(new Barbearia(ID
                 ,NOME
                 ,CNPJ
-                ,List.of()));
+                ,List.of(HORARIO)));
     }
 }
