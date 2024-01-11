@@ -85,12 +85,6 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         }
     }
 
-    @Override
-    public void updateDataResource(Reserva oldResource, ReservaDTO newResource) {
-        oldResource.setCliente(newResource.getCliente());
-        oldResource.setHorario(newResource.getHorario());
-    }
-
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Reserva newReserva) {

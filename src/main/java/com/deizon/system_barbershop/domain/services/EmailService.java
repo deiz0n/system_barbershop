@@ -21,21 +21,24 @@ import java.util.UUID;
 @Service
 public class EmailService {
 
-    @Autowired
     private ClienteRepository clienteRepository;
 
-    @Autowired
     private HorarioRepository horarioRepository;
 
-    @Autowired
     private BarbeariaRepository barbeariaRepository;
 
-    @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    public EmailService(ClienteRepository clienteRepository, HorarioRepository horarioRepository, BarbeariaRepository barbeariaRepository, JavaMailSender mailSender) {
+        this.clienteRepository = clienteRepository;
+        this.horarioRepository = horarioRepository;
+        this.barbeariaRepository = barbeariaRepository;
+        this.mailSender = mailSender;
+    }
 
     @Value("${spring.mail.username}")
     private String emailFrom;
-
 
     public void sendEmail(UUID id, Email email) {
 

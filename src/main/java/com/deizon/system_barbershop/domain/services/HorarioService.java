@@ -85,12 +85,6 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
         }
     }
 
-    @Override
-    public void updateDataResource(Horario oldResource, HorarioDTO newResource) {
-        oldResource.setHorarioInicial(newResource.getHorarioInicial());
-        oldResource.setHorarioFinal(newResource.getHorarioFinal());
-    }
-
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Horario newHorario) {

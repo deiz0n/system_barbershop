@@ -82,14 +82,6 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
         }
     }
 
-    @Override
-    public void updateDataResource(Cliente oldResource, ClienteDTO newResource) {
-        oldResource.setNome(newResource.getNome());
-        oldResource.setCpf(newResource.getCpf());
-        oldResource.setTelefone(newResource.getTelefone());
-        oldResource.setEmail(newResource.getEmail());
-    }
-
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Cliente newCliente) {

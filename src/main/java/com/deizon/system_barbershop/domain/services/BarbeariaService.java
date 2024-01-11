@@ -77,12 +77,6 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
        }
     }
 
-    @Override
-    public void updateDataResource(Barbearia oldResource, BarbeariaDTO newResource) {
-        oldResource.setNome(newResource.getNome());
-        oldResource.setCnpj(newResource.getCnpj());
-    }
-
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Barbearia newBarbeariaa) {
