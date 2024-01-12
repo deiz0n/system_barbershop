@@ -101,4 +101,14 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(409).body(error);
     }
 
+    @ExceptionHandler(SendEmailException.class)
+    public ResponseEntity<Error> sendEmail(SendEmailException exception, HttpServletRequest request) {
+        var error = new Error(
+                Instant.now()
+                ,HttpStatus.INTERNAL_SERVER_ERROR
+                ,exception.getMessage()
+                ,request.getRequestURI()
+        );
+        return ResponseEntity.status(500).body(error);
+    }
 }

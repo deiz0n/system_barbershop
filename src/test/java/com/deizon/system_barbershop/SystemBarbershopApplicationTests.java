@@ -8,6 +8,7 @@ class SystemBarbershopApplicationTests {
 
     @Test
     void contextLoads() {
+        new SystemBarbershopApplication();
     }
 
 }

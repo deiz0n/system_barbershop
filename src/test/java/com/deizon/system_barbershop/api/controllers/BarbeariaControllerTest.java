@@ -66,7 +66,7 @@ class BarbeariaControllerTest {
         assertEquals(ID,response.getBody().get(INDEX).getId());
         assertEquals(NOME,response.getBody().get(INDEX).getNome());
         assertEquals(CNPJ,response.getBody().get(INDEX).getCnpj());
-        assertEquals(HORARIO, response.getBody().get(INDEX).getHorarios());
+        assertEquals(HORARIO, response.getBody().get(INDEX).getHorarios().get(INDEX));
     }
 
     @Test
@@ -85,7 +85,7 @@ class BarbeariaControllerTest {
         assertEquals(ID,response.getBody().getId());
         assertEquals(NOME,response.getBody().getNome());
         assertEquals(CNPJ,response.getBody().getCnpj());
-        assertEquals(HORARIO, response.getBody().getHorarios());
+        assertEquals(HORARIO, response.getBody().getHorarios().get(INDEX));
     }
 
     @Test
@@ -104,7 +104,7 @@ class BarbeariaControllerTest {
         assertEquals(ID,response.getBody().getId());
         assertEquals(NOME,response.getBody().getNome());
         assertEquals(CNPJ,response.getBody().getCnpj());
-        assertEquals(HORARIO, response.getBody().getHorarios());
+        assertEquals(HORARIO, response.getBody().getHorarios().get(INDEX));
     }
 
     @Test
@@ -137,7 +137,7 @@ class BarbeariaControllerTest {
         assertEquals(ID,response.getBody().getId());
         assertEquals(NOME,response.getBody().getNome());
         assertEquals(CNPJ,response.getBody().getCnpj());
-        assertEquals(HORARIO, response.getBody().getHorarios());
+        assertEquals(HORARIO, response.getBody().getHorarios().get(INDEX));
     }
 
     private void startBarbearia() {

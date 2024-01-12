@@ -17,10 +17,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.lang.reflect.Parameter;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.Instant;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -149,5 +149,16 @@ class ExceptionHandlingControllerTest<T> {
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(Error.class, response.getBody().getClass());
         assertEquals("", response.getBody().getError());
+    }
+
+    @Test
+    void thenSendEmailExceptionThenReturnInternalServerError() {
+        ResponseEntity<Error> response = handler.sendEmail(new SendEmailException("Erro inesperado"), new MockHttpServletRequest());
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getBody().getHttpStatus());
+        assertEquals(500, response.getBody().getHttpStatus().value());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(Error.class, response.getBody().getClass());
+        assertEquals("Erro inesperado", response.getBody().getError());
     }
 }
