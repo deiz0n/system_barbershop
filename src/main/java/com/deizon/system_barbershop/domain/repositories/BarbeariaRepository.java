@@ -13,6 +13,7 @@ public interface BarbeariaRepository extends JpaRepository<Barbearia, UUID> {
 
     Optional<Barbearia> findFirstByCnpj(String cnpj);
 
-    String getDataByReserva(UUID id);
+    //String getDataByReserva(UUID id);
+    Optional<String> getDataByReserva(UUID id);
 
 }

@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.domain.services;
 
 import com.deizon.system_barbershop.domain.models.Email;
+import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
@@ -16,6 +17,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,9 +44,7 @@ public class EmailService {
 
     public void sendEmail(UUID id, Email email) {
 
-        ArrayList<String> getClienteData = clienteRepository.getDataByReservas(id);
         ArrayList<Instant> getHorarioData = horarioRepository.getDataByReservas(id);
-        String getBarbeariaData = barbeariaRepository.getDataByReserva(id);
         var dateTime = LocalDateTime.ofInstant(getHorarioData.get(0), ZoneOffset.UTC);
         email.setSendDateEmail(Instant.now());
         try {
@@ -53,9 +53,9 @@ public class EmailService {
 
             var text = new StringBuilder();
             text.append("Olá ");
-            text.append(getClienteData.get(0));
+            text.append(clienteRepository.getDataByReservas(id).get(0));
             text.append(", sua reserva no(a) ");
-            text.append(getBarbeariaData);
+            text.append(barbeariaRepository.getDataByReserva(id).get());
             text.append(". Foi agendada para o dia: ");
             text.append(dateTime.getDayOfMonth());
             text.append(" às ");
@@ -63,7 +63,7 @@ public class EmailService {
             text.append(" horas.");
 
             helper.setFrom(emailFrom);
-            helper.setTo(getClienteData.get(1));
+            helper.setTo(clienteRepository.getDataByReservas(id).get(1));
             helper.setSubject("Reserva confirmada");
             helper.setText(text.toString());
 
