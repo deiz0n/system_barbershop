@@ -69,7 +69,7 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
         if (!horario.isPresent())
             throw new ResourceNotFoundException(id);
         dataValidation(horario.get());
-        horarioRepository.delete(horario.get());
+        horarioRepository.deleteById(horario.get().getId());
     }
 
     //Atualiza os dados do horário

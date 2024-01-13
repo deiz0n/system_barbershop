@@ -175,6 +175,19 @@ class BarbeariaServiceTest {
     }
 
     @Test
+    void whenUpdateResourceThenReturnResourceNotFoundException() {
+        when(repository.getReferenceById(any(UUID.class))).thenThrow(new ResourceNotFoundException(ID));
+
+        try {
+            Barbearia response = service.updateResource(ID, barbeariaDTO);
+        } catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals(String.format("O recurso com o ID: %s não foi encontrado", ID.toString()), e.getMessage());
+        }
+
+    }
+
+    @Test
     void whenUpdateResourceThenReturnExistingNomeException() {
         when(repository.findFirstByNome(anyString())).thenReturn(optional);
         when(repository.getReferenceById(any(UUID.class))).thenReturn(barbearia);
