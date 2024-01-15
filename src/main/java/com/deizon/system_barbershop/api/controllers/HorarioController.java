@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
+import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.services.HorarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class HorarioController {
     //Atualiza os dados do horário comforme id
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateHorario(@PathVariable UUID id,
-                                           @RequestBody @Valid HorarioDTO newHorario) {
+    public ResponseEntity<Horario> updateHorario(@PathVariable UUID id,
+                                                 @RequestBody @Valid HorarioDTO newHorario) {
         var horario = horarioService.updateResource(id, newHorario);
         return ResponseEntity.ok().body(horario);
     }
