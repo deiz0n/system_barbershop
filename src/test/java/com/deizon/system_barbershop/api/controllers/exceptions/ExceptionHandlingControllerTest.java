@@ -1,6 +1,9 @@
-package com.deizon.system_barbershop.domain.services.exceptions;
+package com.deizon.system_barbershop.api.controllers.exceptions;
 
+import com.deizon.system_barbershop.api.controllers.exceptions.Error;
+import com.deizon.system_barbershop.api.controllers.exceptions.ExceptionHandlerController;
 import com.deizon.system_barbershop.domain.models.Cliente;
+import com.deizon.system_barbershop.domain.services.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.lang.reflect.Parameter;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.Instant;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,7 +45,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenResourceNotFoundThenReturnNotFound() {
-        ResponseEntity<Error> response = handler.resourceNotFound(
+        ResponseEntity<Error> response = handler.handleResourceNotFound(
                 new ResourceNotFoundException(ID), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -58,7 +60,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenExistingFieldThenReturnConflict() {
-        ResponseEntity<Error> response = handler.existingField(
+        ResponseEntity<Error> response = handler.handleExistingField(
                 new ExistingFieldException("Campo já cadastrado"), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -79,7 +81,7 @@ class ExceptionHandlingControllerTest<T> {
         MethodParameter methodParameter = mock(MethodParameter.class);
         when(methodParameter.getParameter()).thenReturn(mock(Parameter.class));
 
-        ResponseEntity<Error> response = handler.argumentInvalid(
+        ResponseEntity<Error> response = handler.handleFieldInvalid(
                 new MethodArgumentNotValidException(methodParameter, this.result), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -94,7 +96,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenDateInvalidThenReturnBadRequest() {
-        ResponseEntity<Error> response = handler.dataInvalid(new MockHttpServletRequest());
+        ResponseEntity<Error> response = handler.handleHTTPMessageNotReadable(new MockHttpServletRequest());
 
         assertNotNull(response);
         assertNotNull(response.getBody());
@@ -108,7 +110,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenDataShortThenReturnBadRequest() {
-        ResponseEntity<Error> response = handler.dataShort(
+        ResponseEntity<Error> response = handler.handleArgumentNotValid(
                 new ArgumentNotValidException("Intervalo de tempo muito curto. Tente novamente"), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -123,7 +125,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenContraintVioletionThenReturnBadRequest() {
-        ResponseEntity<Error> response = handler.contraintVioletion(
+        ResponseEntity<Error> response = handler.handleSQLIntegrityConstraintViolation(
                 new SQLIntegrityConstraintViolationException("FK40agr0nhu8t21hlb0s4bifbsp"), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -138,7 +140,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void whenDataIntegrityThenReturnConflict() {
-        ResponseEntity<Error> response = handler.dataIntegrity(
+        ResponseEntity<Error> response = handler.handleDataIntegrity(
                 new DataIntegrityException(""), new MockHttpServletRequest());
 
         assertNotNull(response);
@@ -153,7 +155,7 @@ class ExceptionHandlingControllerTest<T> {
 
     @Test
     void thenSendEmailExceptionThenReturnInternalServerError() {
-        ResponseEntity<Error> response = handler.sendEmail(new SendEmailException("Erro inesperado"), new MockHttpServletRequest());
+        ResponseEntity<Error> response = handler.handleSendEmail(new SendEmailException("Erro inesperado"), new MockHttpServletRequest());
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getBody().getHttpStatus());
         assertEquals(500, response.getBody().getHttpStatus().value());

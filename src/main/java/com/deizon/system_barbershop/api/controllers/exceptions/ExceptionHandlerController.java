@@ -1,5 +1,6 @@
-package com.deizon.system_barbershop.domain.services.exceptions;
+package com.deizon.system_barbershop.api.controllers.exceptions;
 
+import com.deizon.system_barbershop.domain.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.time.Instant;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Error> resourceNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> handleResourceNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.NOT_FOUND,
@@ -26,7 +27,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(ExistingFieldException.class)
-    public ResponseEntity<Error> existingField(ExistingFieldException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> handleExistingField(ExistingFieldException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.CONFLICT,
@@ -37,7 +38,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Error> argumentInvalid(MethodArgumentNotValidException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> handleFieldInvalid(MethodArgumentNotValidException exception, HttpServletRequest request) {
         var stringBuilder = new StringBuilder();
         stringBuilder.append(exception.getFieldError().getField().toUpperCase());
         stringBuilder.append(" inválido.");
@@ -51,7 +52,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Error> dataInvalid(HttpServletRequest request) {
+    public ResponseEntity<Error> handleHTTPMessageNotReadable(HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
@@ -62,7 +63,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(ArgumentNotValidException.class)
-    public ResponseEntity<Error> dataShort(ArgumentNotValidException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> handleArgumentNotValid(ArgumentNotValidException exception, HttpServletRequest request) {
             Error error = new Error(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
@@ -73,7 +74,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<Error> contraintVioletion(SQLIntegrityConstraintViolationException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> handleSQLIntegrityConstraintViolation(SQLIntegrityConstraintViolationException exception, HttpServletRequest request) {
         var msg = new String();
         if (exception.getMessage().contains("FK40agr0nhu8t21hlb0s4bifbsp")) {
             msg = "O horário informado não foi encontrado.";
@@ -91,7 +92,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(DataIntegrityException.class)
-    public ResponseEntity<Error> dataIntegrity(DataIntegrityException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> handleDataIntegrity(DataIntegrityException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now(),
                 HttpStatus.CONFLICT,
@@ -102,7 +103,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(SendEmailException.class)
-    public ResponseEntity<Error> sendEmail(SendEmailException exception, HttpServletRequest request) {
+    public ResponseEntity<Error> handleSendEmail(SendEmailException exception, HttpServletRequest request) {
         var error = new Error(
                 Instant.now()
                 ,HttpStatus.INTERNAL_SERVER_ERROR

@@ -1,4 +1,4 @@
-package com.deizon.system_barbershop.domain.services.exceptions;
+package com.deizon.system_barbershop.api.controllers.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
