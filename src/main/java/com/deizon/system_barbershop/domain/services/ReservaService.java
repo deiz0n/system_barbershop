@@ -2,8 +2,6 @@ package com.deizon.system_barbershop.domain.services;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
 import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
-import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ReservaDTOMapper;
 import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
@@ -20,18 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
 
-    private ClienteRepository clienteRepository;
-
-    private HorarioRepository horarioRepository;
-
     private ReservaRepository reservaRepository;
 
     private ReservaDTOMapper reservaDTOMapper;
 
     @Autowired
-    public ReservaService(ClienteRepository clienteRepository, HorarioRepository horarioRepository, ReservaRepository reservaRepository, ReservaDTOMapper reservaDTOMapper) {
-        this.clienteRepository = clienteRepository;
-        this.horarioRepository = horarioRepository;
+    public ReservaService(ReservaRepository reservaRepository, ReservaDTOMapper reservaDTOMapper) {
         this.reservaRepository = reservaRepository;
         this.reservaDTOMapper = reservaDTOMapper;
     }
@@ -69,7 +61,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         var reserva = reservaRepository.findById(id);
         if (!reserva.isPresent())
             throw new ResourceNotFoundException(id);
-        reservaRepository.delete(reserva.get());
+        reservaRepository.deleteById(reserva.get().getId());
     }
 
     //Atualiza os dados da reserva
