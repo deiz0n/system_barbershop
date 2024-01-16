@@ -2,6 +2,7 @@ package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
 import com.deizon.system_barbershop.domain.models.Email;
+import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.services.EmailService;
 import com.deizon.system_barbershop.domain.services.ReservaService;
@@ -71,7 +72,7 @@ public class ReservaController {
     //Atualiza os dados da reserva comforme id
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateReserva(@PathVariable UUID id, @RequestBody @Valid ReservaDTO newReserva) {
+    public ResponseEntity<Reserva> updateReserva(@PathVariable UUID id, @RequestBody @Valid ReservaDTO newReserva) {
         var reserva = reservaService.updateResource(id, newReserva);
         return ResponseEntity.ok().body(reserva);
     }
