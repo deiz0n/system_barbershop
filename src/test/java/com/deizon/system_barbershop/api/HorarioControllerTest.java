@@ -1,13 +1,12 @@
-package com.deizon.system_barbershop.api.controllers;
+package com.deizon.system_barbershop.api;
 
-import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
+import com.deizon.system_barbershop.api.controllers.HorarioController;
 import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.services.DTOMapper.HorarioDTOMapper;
 import com.deizon.system_barbershop.domain.services.HorarioService;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

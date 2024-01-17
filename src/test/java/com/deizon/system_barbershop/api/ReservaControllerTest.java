@@ -1,12 +1,11 @@
-package com.deizon.system_barbershop.api.controllers;
+package com.deizon.system_barbershop.api;
 
-import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
+import com.deizon.system_barbershop.api.controllers.ReservaController;
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.services.DTOMapper.ReservaDTOMapper;
 import com.deizon.system_barbershop.domain.services.EmailService;
 import com.deizon.system_barbershop.domain.services.ReservaService;
 import org.junit.jupiter.api.BeforeEach;

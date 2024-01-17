@@ -1,4 +1,4 @@
-package com.deizon.system_barbershop.api.controllers;
+package com.deizon.system_barbershop.api;
 
 import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
 import com.deizon.system_barbershop.domain.models.Cliente;

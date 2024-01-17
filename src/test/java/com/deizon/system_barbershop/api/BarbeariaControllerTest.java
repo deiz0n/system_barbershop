@@ -1,12 +1,10 @@
-package com.deizon.system_barbershop.api.controllers;
+package com.deizon.system_barbershop.api;
 
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.services.BarbeariaService;
-import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

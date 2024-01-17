@@ -1,7 +1,6 @@
 package com.deizon.system_barbershop.domain.services;
 
 import com.deizon.system_barbershop.domain.models.Email;
-import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.repositories.BarbeariaRepository;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
@@ -17,7 +16,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

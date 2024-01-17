@@ -3,10 +3,8 @@ package com.deizon.system_barbershop.api.controllers;
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
 import com.deizon.system_barbershop.domain.models.Email;
 import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.services.EmailService;
 import com.deizon.system_barbershop.domain.services.ReservaService;
-import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +18,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/reservas")
 public class ReservaController {
-
-    @Autowired
-    private ClienteRepository clienteRepository;
 
     private ReservaService reservaService;
 
@@ -52,15 +47,11 @@ public class ReservaController {
     @Transactional
     @PostMapping
     public ResponseEntity<?> createReserva(@RequestBody @Valid ReservaDTO newReserva) {
-        try {
-            var reserva = reservaService.addResource(newReserva);
-            emailService.sendEmail(reserva.getId(), new Email());
-            return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
-        } catch (ExistingFieldException error) {
-            return ResponseEntity.badRequest().body("O horário informado já está cadastrado em outra reserva.");
-        }
+        var reserva = reservaService.addResource(newReserva);
+        emailService.sendEmail(reserva.getId(), new Email());
+        return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
     }
-
+    
     //Deleta uma reserva comforme id
     @Transactional
     @DeleteMapping("/{id}")
@@ -76,5 +67,4 @@ public class ReservaController {
         var reserva = reservaService.updateResource(id, newReserva);
         return ResponseEntity.ok().body(reserva);
     }
-
 }
