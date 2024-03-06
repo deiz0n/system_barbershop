@@ -1,5 +1,6 @@
 package com.deizon.system_barbershop.api;
 
+import com.deizon.system_barbershop.api.controllers.BarbeariaController;
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
 import com.deizon.system_barbershop.domain.models.Horario;
@@ -28,7 +29,6 @@ class BarbeariaControllerTest {
 
     public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Dudu Cortas";
-    public static final String CNPJ = "96852528000168";
     public static final Horario HORARIO = new Horario(UUID.randomUUID(), Instant.now(), Instant.now().plusSeconds(1260L), new Barbearia(), new Reserva());
     public static final Integer INDEX = 0;
 
@@ -62,7 +62,6 @@ class BarbeariaControllerTest {
 
         assertEquals(ID,response.getBody().get(INDEX).getId());
         assertEquals(NOME,response.getBody().get(INDEX).getNome());
-        assertEquals(CNPJ,response.getBody().get(INDEX).getCnpj());
         assertEquals(HORARIO, response.getBody().get(INDEX).getHorarios().get(INDEX));
     }
 
@@ -81,7 +80,6 @@ class BarbeariaControllerTest {
 
         assertEquals(ID,response.getBody().getId());
         assertEquals(NOME,response.getBody().getNome());
-        assertEquals(CNPJ,response.getBody().getCnpj());
         assertEquals(HORARIO, response.getBody().getHorarios().get(INDEX));
     }
 
@@ -100,7 +98,6 @@ class BarbeariaControllerTest {
 
         assertEquals(ID,response.getBody().getId());
         assertEquals(NOME,response.getBody().getNome());
-        assertEquals(CNPJ,response.getBody().getCnpj());
         assertEquals(HORARIO, response.getBody().getHorarios().get(INDEX));
     }
 
@@ -133,22 +130,18 @@ class BarbeariaControllerTest {
 
         assertEquals(ID,response.getBody().getId());
         assertEquals(NOME,response.getBody().getNome());
-        assertEquals(CNPJ,response.getBody().getCnpj());
         assertEquals(HORARIO, response.getBody().getHorarios().get(INDEX));
     }
 
     private void startBarbearia() {
         barbearia = new Barbearia(ID
                 ,NOME
-                ,CNPJ
-                , List.of(HORARIO));
+                ,List.of(HORARIO));
         barbeariaDTO = new BarbeariaDTO(ID
                 ,NOME
-                ,CNPJ
                 ,List.of(HORARIO));
         optional = Optional.of(new Barbearia(ID
                 ,NOME
-                ,CNPJ
                 ,List.of(HORARIO)));
 
     }

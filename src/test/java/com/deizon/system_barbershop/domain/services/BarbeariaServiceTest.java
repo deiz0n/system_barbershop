@@ -27,7 +27,6 @@ class BarbeariaServiceTest {
 
     public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Dudu Cortas";
-    public static final String CNPJ = "96852528000168";
     public static final Horario HORARIO = new Horario(UUID.randomUUID(), Instant.now(), Instant.now().plusSeconds(1260L), new Barbearia(), new Reserva());
     public static final Integer INDEX = 0;
 
@@ -61,7 +60,6 @@ class BarbeariaServiceTest {
 
         assertEquals(ID, response.get(INDEX).getId());
         assertEquals(NOME, response.get(INDEX).getNome());
-        assertEquals(CNPJ, response.get(INDEX).getCnpj());
         assertEquals(HORARIO, response.get(INDEX).getHorarios().get(INDEX));
     }
 
@@ -77,7 +75,6 @@ class BarbeariaServiceTest {
 
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
-        assertEquals(CNPJ, response.getCnpj());
         assertEquals(HORARIO, response.getHorarios().get(INDEX));
     }
 
@@ -104,7 +101,6 @@ class BarbeariaServiceTest {
 
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
-        assertEquals(CNPJ, response.getCnpj());
         assertEquals(HORARIO, response.getHorarios().get(INDEX));
     }
 
@@ -115,26 +111,10 @@ class BarbeariaServiceTest {
 
         try {
             barbeariaDTO.setId(UUID.randomUUID());
-            barbeariaDTO.setCnpj("32898944000114");
             Barbearia response = service.addResource(barbeariaDTO);
         } catch (Exception e) {
             assertEquals(ExistingFieldException.class, e.getClass());
             assertEquals("Nome já vinculado a outra barbeária", e.getMessage());
-        }
-    }
-
-    @Test
-    void whenAddResourceThenExistingCnpjException() {
-        when(repository.findFirstByCnpj(anyString())).thenReturn(optional);
-        when(repository.save(any())).thenReturn(barbearia);
-
-        try {
-            barbeariaDTO.setId(UUID.randomUUID());
-            barbeariaDTO.setNome("Teste Teste");
-            Barbearia response = service.addResource(barbeariaDTO);
-        } catch (Exception e) {
-            assertEquals(ExistingFieldException.class, e.getClass());
-            assertEquals("CNPJ já vinculado a outra barbeária", e.getMessage());
         }
     }
 
@@ -170,7 +150,6 @@ class BarbeariaServiceTest {
         assertEquals(Barbearia.class, response.getClass());
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
-        assertEquals(CNPJ, response.getCnpj());
         assertEquals(HORARIO, response.getHorarios().get(INDEX));
     }
 
@@ -194,7 +173,6 @@ class BarbeariaServiceTest {
 
         try {
             optional.get().setId(UUID.randomUUID());
-            optional.get().setCnpj("60175176000106");
             Barbearia response = service.updateResource(ID, barbeariaDTO);
         } catch (Exception e) {
             assertEquals(ExistingFieldException.class, e.getClass());
@@ -203,33 +181,15 @@ class BarbeariaServiceTest {
 
     }
 
-    @Test
-    void whenUpdateResourceThenReturnExistingCnpjEception() {
-        when(repository.findFirstByCnpj(anyString())).thenReturn(optional);
-        when(repository.getReferenceById(any(UUID.class))).thenReturn(barbearia);
-
-        try {
-            optional.get().setId(UUID.randomUUID());
-            optional.get().setNome("Teste teste");
-            Barbearia response = service.updateResource(ID, barbeariaDTO);
-        } catch (Exception e) {
-            assertEquals(ExistingFieldException.class, e.getClass());
-            assertEquals("CNPJ já vinculado a outra barbeária", e.getMessage());
-        }
-    }
-
     private void startBarbearia() {
         barbearia = new Barbearia(ID
                 ,NOME
-                ,CNPJ
                 ,List.of(HORARIO));
         barbeariaDTO = new BarbeariaDTO(ID
                 ,NOME
-                ,CNPJ
                 ,List.of(HORARIO));
         optional = Optional.of(new Barbearia(ID
                 ,NOME
-                ,CNPJ
                 ,List.of(HORARIO)));
     }
 }

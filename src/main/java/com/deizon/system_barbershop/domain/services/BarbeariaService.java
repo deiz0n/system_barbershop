@@ -83,8 +83,5 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
         var barbeariaByNome = barbeariaRepository.findFirstByNome(newBarbeariaa.getNome());
         if (barbeariaByNome.isPresent() && !barbeariaByNome.get().getId().equals(newBarbeariaa.getId()))
             throw new ExistingFieldException("Nome já vinculado a outra barbeária");
-        var barbeariaByCnpj = barbeariaRepository.findFirstByCnpj(newBarbeariaa.getCnpj());
-        if (barbeariaByCnpj.isPresent() && !barbeariaByCnpj.get().getId().equals(newBarbeariaa.getId()))
-          throw new ExistingFieldException("CNPJ já vinculado a outra barbeária");
     }
 }

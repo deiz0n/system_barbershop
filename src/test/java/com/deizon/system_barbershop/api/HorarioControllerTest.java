@@ -31,7 +31,7 @@ class HorarioControllerTest {
     public static final UUID ID = UUID.randomUUID();
     public static final Instant HORARIO_INICIAL = Instant.now();
     public static final Instant HORARIO_FINAL = HORARIO_INICIAL.plusSeconds(1260L);
-    public static final Barbearia BARBEARIA = new Barbearia(UUID.randomUUID(), "Barbearia", "91259852000153", List.of());
+    public static final Barbearia BARBEARIA = new Barbearia(UUID.randomUUID(), "Barbearia", List.of());
     public static final int INDEX = 0;
 
     @InjectMocks

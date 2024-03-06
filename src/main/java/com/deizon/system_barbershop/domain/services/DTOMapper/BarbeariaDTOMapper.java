@@ -13,7 +13,6 @@ public class BarbeariaDTOMapper implements Function<Barbearia, BarbeariaDTO> {
         return new BarbeariaDTO(
                 barbearia.getId(),
                 barbearia.getNome(),
-                barbearia.getCnpj(),
                 barbearia.getHorarios()
         );
     }

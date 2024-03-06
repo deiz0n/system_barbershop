@@ -22,7 +22,5 @@ public class BarbeariaDTO {
     @NotBlank(message = "Esse campo não pode ficar em branco")
     private String nome;
     @CNPJ(message = "CNPJ inválido. Tente novamente")
-    @NotBlank(message = "Esse campo não pode ficar em branco")
-    private String cnpj;
     private List<Horario> horarios;
 }

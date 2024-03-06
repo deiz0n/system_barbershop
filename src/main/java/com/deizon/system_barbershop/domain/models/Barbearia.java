@@ -19,7 +19,6 @@ public class Barbearia {
     @EqualsAndHashCode.Include
     private UUID id;
     private String nome;
-    private String cnpj;
 
     @JsonIgnore
     @Setter(AccessLevel.NONE)
