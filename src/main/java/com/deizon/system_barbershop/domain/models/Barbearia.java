@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Barbearia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private UUID id;
     private String nome;

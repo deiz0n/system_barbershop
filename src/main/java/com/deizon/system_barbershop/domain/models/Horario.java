@@ -20,7 +20,7 @@ public class Horario {
 
     @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     private Instant horarioInicial;
     private Instant horarioFinal;
