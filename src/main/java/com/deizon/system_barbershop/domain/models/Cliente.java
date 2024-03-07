@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ public class Cliente {
 
     @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String nome;
     private String cpf;
@@ -24,7 +25,7 @@ public class Cliente {
     private String email;
 
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "cliente")
     private List<Reserva> reservas;

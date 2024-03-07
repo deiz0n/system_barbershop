@@ -1,6 +1,5 @@
 package com.deizon.system_barbershop.domain.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,13 +14,13 @@ import java.util.UUID;
 public class Barbearia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
     private UUID id;
     private String nome;
 
-    @JsonIgnore
-    @Setter(AccessLevel.NONE)
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "barbearia")
     private List<Horario> horarios;
 
