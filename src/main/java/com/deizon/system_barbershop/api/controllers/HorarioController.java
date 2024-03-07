@@ -37,7 +37,7 @@ public class HorarioController {
     //Cria um novo horário
     @Transactional
     @PostMapping
-    public ResponseEntity<?> createHorario(@RequestBody @Valid HorarioDTO newHorario) {
+    public ResponseEntity<?> createHorario(@RequestBody HorarioDTO newHorario) {
         var horario = horarioService.addResource(newHorario);
         return ResponseEntity.status(HttpStatus.CREATED).body(horario);
     }
@@ -54,7 +54,7 @@ public class HorarioController {
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<Horario> updateHorario(@PathVariable UUID id,
-                                                 @RequestBody @Valid HorarioDTO newHorario) {
+                                                 @RequestBody HorarioDTO newHorario) {
         var horario = horarioService.updateResource(id, newHorario);
         return ResponseEntity.ok().body(horario);
     }
