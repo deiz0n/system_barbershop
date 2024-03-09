@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.domain.services;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
+import com.deizon.system_barbershop.domain.enums.StatusReserva;
 import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ReservaDTOMapper;
@@ -49,6 +50,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     @Override
     public Reserva addResource(ReservaDTO reservaDTO) {
         var reserva = new Reserva();
+        reservaDTO.setStatus(StatusReserva.PENDENTE);
         BeanUtils.copyProperties(reservaDTO, reserva);
         dataValidation(reserva);
         return reservaRepository.save(reserva);

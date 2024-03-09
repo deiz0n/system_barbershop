@@ -1,5 +1,6 @@
 package com.deizon.system_barbershop.domain.dtos;
 
+import com.deizon.system_barbershop.domain.enums.StatusReserva;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.models.Horario;
 import lombok.AllArgsConstructor;
@@ -19,5 +20,6 @@ public class ReservaDTO {
     private UUID id;
     private Cliente cliente;
     private Horario horario;
-    
+    private StatusReserva status;
+
 }

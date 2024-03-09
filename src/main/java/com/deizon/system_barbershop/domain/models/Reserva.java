@@ -1,5 +1,6 @@
 package com.deizon.system_barbershop.domain.models;
 
+import com.deizon.system_barbershop.domain.enums.StatusReserva;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
     private UUID id;
+    private StatusReserva status;
 
     @JsonIgnore
     @ManyToOne
