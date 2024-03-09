@@ -1,13 +1,14 @@
 package com.deizon.system_barbershop.domain.dtos;
 
 import com.deizon.system_barbershop.domain.models.Barbearia;
-import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Data
@@ -18,8 +19,6 @@ public class HorarioDTO {
 
     @EqualsAndHashCode.Include
     private UUID id;
-    private Instant horarioInicial;
-    private Instant horarioFinal;
+    private LocalDateTime horario;
     private Barbearia barbearia;
-
 }

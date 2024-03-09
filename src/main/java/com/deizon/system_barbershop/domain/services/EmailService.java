@@ -42,8 +42,8 @@ public class EmailService {
 
     public void sendEmail(UUID id, Email email) {
 
-        ArrayList<Instant> getHorarioData = horarioRepository.getDataByReservas(id);
-        var dateTime = LocalDateTime.ofInstant(getHorarioData.get(0), ZoneOffset.UTC);
+        //ArrayList<Instant> getHorarioData = horarioRepository.getDataByReservas(id);
+        //var dateTime = LocalDateTime.ofInstant(getHorarioData.get(0), ZoneOffset.UTC);
         email.setSendDateEmail(Instant.now());
         try {
             var message = mailSender.createMimeMessage();
@@ -51,17 +51,17 @@ public class EmailService {
 
             var text = new StringBuilder();
             text.append("Olá ");
-            text.append(clienteRepository.getDataByReservas(id).get(0));
+           // text.append(clienteRepository.getDataByReservas(id).get(0));
             text.append(", sua reserva no(a) ");
-            text.append(barbeariaRepository.getDataByReserva(id).get());
+            //text.append(barbeariaRepository.getDataByReserva(id).get());
             text.append(". Foi agendada para o dia: ");
-            text.append(dateTime.getDayOfMonth());
+            //text.append(dateTime.getDayOfMonth());
             text.append(" às ");
-            text.append(dateTime.getHour());
+            //text.append(dateTime.getHour());
             text.append(" horas.");
 
             helper.setFrom(emailFrom);
-            helper.setTo(clienteRepository.getDataByReservas(id).get(1));
+            //helper.setTo(clienteRepository.getDataByReservas(id).get(1));
             helper.setSubject("Reserva confirmada");
             helper.setText(text.toString());
 

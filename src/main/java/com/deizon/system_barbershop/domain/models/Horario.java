@@ -9,6 +9,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
@@ -22,15 +25,14 @@ public class Horario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private Instant horarioInicial;
-    private Instant horarioFinal;
+    private LocalDateTime horario;
 
     @JsonIgnore
     @ManyToOne
     private Barbearia barbearia;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Reserva reserva;
 
 }

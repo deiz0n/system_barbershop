@@ -1,7 +1,11 @@
 package com.deizon.system_barbershop.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +25,7 @@ public class Barbearia {
 
 //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
 //    @Setter(AccessLevel.NONE)
+    @JsonIgnore
     @OneToMany(mappedBy = "barbearia")
     private List<Horario> horarios;
 

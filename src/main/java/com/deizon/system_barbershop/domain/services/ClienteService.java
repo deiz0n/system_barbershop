@@ -5,7 +5,6 @@ import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.ClienteDTOMapper;
-import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
 import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -63,8 +62,7 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     @Override
     public void remResource(UUID id) {
         var cliente = clienteRepository.findById(id);
-        if (!cliente.isPresent())
-            throw new ResourceNotFoundException(id);
+        if (cliente.isEmpty()) throw new ResourceNotFoundException(id);
         dataValidation(cliente.get());
         clienteRepository.deleteById(cliente.get().getId());
     }
@@ -85,17 +83,10 @@ public class ClienteService implements ServiceCRUD<ClienteDTO, Cliente> {
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Cliente newCliente) {
-        if (reservaRepository.findFirstByCliente(newCliente).isPresent())
-            throw new DataIntegrityException("O cliente não pode ser excluído pois está vinculado a uma reserva.");
-        var clienteByCpf = clienteRepository.findFirstByCpf(newCliente.getCpf());
-        if (clienteByCpf.isPresent() && !clienteByCpf.get().getId().equals(newCliente.getId()))
-            throw new ExistingFieldException("CPF já cadastrado");
         var clienteByEmail = clienteRepository.findFirstByEmail(newCliente.getEmail());
-        if (clienteByEmail.isPresent() && !clienteByEmail.get().getId().equals(newCliente.getId()))
-            throw new ExistingFieldException("Email já cadastrado");
+        if (clienteByEmail.isPresent() && !clienteByEmail.get().getId().equals(newCliente.getId())) throw new ExistingFieldException("Email já cadastrado");
         var clienteByTelefone = clienteRepository.findFirstByTelefone(newCliente.getTelefone());
-        if (clienteByTelefone.isPresent() && !clienteByTelefone.get().getId().equals(newCliente.getId()))
-            throw new ExistingFieldException("Telefone já cadastrado");
+        if (clienteByTelefone.isPresent() && !clienteByTelefone.get().getId().equals(newCliente.getId())) throw new ExistingFieldException("Telefone já cadastrado");
     }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
@@ -18,7 +18,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Error> handleResourceNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
         var error = new Error(
-                Instant.now(),
+                LocalDateTime.now(),
                 HttpStatus.NOT_FOUND,
                 exception.getMessage(),
                 request.getRequestURI()
@@ -29,7 +29,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(ExistingFieldException.class)
     public ResponseEntity<Error> handleExistingField(ExistingFieldException exception, HttpServletRequest request) {
         var error = new Error(
-                Instant.now(),
+                LocalDateTime.now(),
                 HttpStatus.CONFLICT,
                 exception.getMessage(),
                 request.getRequestURI()
@@ -43,7 +43,7 @@ public class ExceptionHandlerController {
         stringBuilder.append(exception.getFieldError().getField().toUpperCase());
         stringBuilder.append(" inválido.");
         var error = new Error(
-                Instant.now(),
+                LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST,
                 stringBuilder.toString(),
                 request.getRequestURI()
@@ -54,7 +54,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Error> handleHTTPMessageNotReadable(HttpServletRequest request) {
         var error = new Error(
-                Instant.now(),
+                LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST,
                 "O horário informado possui formato inválido.",
                 request.getRequestURI()
@@ -65,10 +65,10 @@ public class ExceptionHandlerController {
     @ExceptionHandler(ArgumentNotValidException.class)
     public ResponseEntity<Error> handleArgumentNotValid(ArgumentNotValidException exception, HttpServletRequest request) {
             Error error = new Error(
-                Instant.now(),
-                HttpStatus.BAD_REQUEST,
-                exception.getMessage(),
-                request.getRequestURI()
+                    LocalDateTime.now(),
+                    HttpStatus.BAD_REQUEST,
+                    exception.getMessage(),
+                    request.getRequestURI()
         );
         return ResponseEntity.status(400).body(error);
     }
@@ -83,7 +83,7 @@ public class ExceptionHandlerController {
             msg = "O cliente informado não foi encontrado.";
         }
         var error = new Error(
-                Instant.now(),
+                LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST,
                 msg,
                 request.getRequestURI()
@@ -94,7 +94,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(DataIntegrityException.class)
     public ResponseEntity<Error> handleDataIntegrity(DataIntegrityException exception, HttpServletRequest request) {
         var error = new Error(
-                Instant.now(),
+                LocalDateTime.now(),
                 HttpStatus.CONFLICT,
                 exception.getMessage(),
                 request.getRequestURI()
@@ -105,7 +105,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(SendEmailException.class)
     public ResponseEntity<Error> handleSendEmail(SendEmailException exception, HttpServletRequest request) {
         var error = new Error(
-                Instant.now()
+                LocalDateTime.now()
                 ,HttpStatus.INTERNAL_SERVER_ERROR
                 ,exception.getMessage()
                 ,request.getRequestURI()

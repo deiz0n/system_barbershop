@@ -17,7 +17,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +32,6 @@ class ClienteServiceTest {
 
     public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Carlos Eduardo";
-    public static final String CPF = "14595214049";
     public static final String TELEFONE = "11940028922";
     public static final String EMAIL = "eduardo@gmail.com";
     public static final Reserva RESERVA = new Reserva(UUID.randomUUID(), new Cliente(), new Horario());
@@ -72,7 +74,6 @@ class ClienteServiceTest {
 
         assertEquals(ID, response.get(INDEX).getId());
         assertEquals(NOME, response.get(INDEX).getNome());
-        assertEquals(CPF, response.get(INDEX).getCpf());
         assertEquals(TELEFONE, response.get(INDEX).getTelefone());
         assertEquals(EMAIL, response.get(INDEX).getEmail());
         assertEquals(RESERVA, response.get(INDEX).getReservas().get(INDEX));
@@ -90,7 +91,6 @@ class ClienteServiceTest {
         assertEquals(ClienteDTO.class, response.getClass());
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
-        assertEquals(CPF, response.getCpf());
         assertEquals(TELEFONE, response.getTelefone());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(RESERVA, response.getReservas().get(INDEX));
@@ -120,26 +120,9 @@ class ClienteServiceTest {
         assertEquals(Cliente.class, response.getClass());
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
-        assertEquals(CPF, response.getCpf());
         assertEquals(TELEFONE, response.getTelefone());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(RESERVA, response.getReservas().get(INDEX));
-    }
-
-    @Test
-    void whenAddResourceThenReturnExistingCpfException() {
-        when(reservaRepository.findFirstByCliente(any())).thenReturn(Optional.empty());
-        when(repository.findFirstByCpf(anyString())).thenReturn(optional);
-
-        try {
-            optional.get().setId(UUID.randomUUID());
-            optional.get().setEmail("teste@gmail.com");
-            optional.get().setTelefone("telefone teste");
-            Cliente response = service.addResource(clienteDTO);
-        } catch (Exception e) {
-            assertEquals(ExistingFieldException.class, e.getClass());
-            assertEquals("CPF já cadastrado", e.getMessage());
-        }
     }
 
     @Test
@@ -149,7 +132,6 @@ class ClienteServiceTest {
 
         try {
             optional.get().setId(UUID.randomUUID());
-            optional.get().setCpf("17353");
             optional.get().setTelefone("telefone teste");
             Cliente response = service.addResource(clienteDTO);
         } catch (Exception e) {
@@ -165,7 +147,6 @@ class ClienteServiceTest {
 
         try {
             optional.get().setId(UUID.randomUUID());
-            optional.get().setCpf("17353");
             optional.get().setEmail("teste@gmail.com");
             Cliente response = service.addResource(clienteDTO);
         } catch (Exception e) {
@@ -225,7 +206,6 @@ class ClienteServiceTest {
         assertEquals(Cliente.class, response.getClass());
         assertEquals(ID, response.getId());
         assertEquals(NOME, response.getNome());
-        assertEquals(CPF, response.getCpf());
         assertEquals(TELEFONE, response.getTelefone());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(RESERVA, response.getReservas().get(INDEX));
@@ -245,29 +225,12 @@ class ClienteServiceTest {
     }
 
     @Test
-    void whenUpdateResourceThenReturnExistingCpfException(){
-        when(repository.getReferenceById(any(UUID.class))).thenReturn(cliente);
-        when(repository.findFirstByCpf(anyString())).thenReturn(optional);
-
-        try {
-            optional.get().setId(UUID.randomUUID());
-            optional.get().setEmail("teste@gmail.com");
-            optional.get().setTelefone("telefone teste");
-            Cliente response = service.updateResource(ID, clienteDTO);
-        } catch (Exception e) {
-            assertEquals(ExistingFieldException.class, e.getClass());
-            assertEquals("CPF já cadastrado", e.getMessage());
-        }
-    }
-
-    @Test
     void whenUpdateResourceThenReturnExistingEmailException() {
         when(repository.getReferenceById(any(UUID.class))).thenReturn(cliente);
         when(repository.findFirstByEmail(anyString())).thenReturn(optional);
 
         try {
             optional.get().setId(UUID.randomUUID());
-            optional.get().setCpf("4654845");
             optional.get().setTelefone("telefone teste");
             Cliente response = service.updateResource(ID, clienteDTO);
         } catch (Exception e) {
@@ -283,7 +246,6 @@ class ClienteServiceTest {
 
         try {
             optional.get().setId(UUID.randomUUID());
-            optional.get().setCpf("574584");
             optional.get().setEmail("teste@gmail.com");
             Cliente response = service.updateResource(ID, clienteDTO);
         } catch (Exception e) {
@@ -295,19 +257,16 @@ class ClienteServiceTest {
     private void startCliente() {
         cliente = new Cliente(ID
                 ,NOME
-                ,CPF
                 ,TELEFONE
                 ,EMAIL
                 ,List.of(RESERVA));
         clienteDTO = new ClienteDTO(ID
                 ,NOME
-                ,CPF
                 ,TELEFONE
                 ,EMAIL
                 ,List.of(RESERVA));
         optional = Optional.of(new Cliente(ID
                 ,NOME
-                ,CPF
                 ,TELEFONE
                 ,EMAIL
                 ,List.of(RESERVA)));

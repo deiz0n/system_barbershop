@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +22,6 @@ public class ClienteDTO {
     private UUID id;
     @NotBlank(message = "Esse campo não pode ficar em branco")
     private String nome;
-    @CPF(message = "CPF inválido. Tente novamente!")
-    @NotBlank(message = "Esse campo não pode ficar em branco")
-    private String cpf;
     @NotBlank(message = "Esse campo não pode ficar em branco")
     @Size(min = 11, message = "Número de telefone inválido, o número precisa ter ao menos 11 digitos")
     private String telefone;

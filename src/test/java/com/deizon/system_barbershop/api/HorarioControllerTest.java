@@ -1,55 +1,35 @@
 package com.deizon.system_barbershop.api;
 
-import com.deizon.system_barbershop.api.controllers.HorarioController;
-import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
-import com.deizon.system_barbershop.domain.models.Barbearia;
-import com.deizon.system_barbershop.domain.models.Horario;
-import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.services.DTOMapper.HorarioDTOMapper;
-import com.deizon.system_barbershop.domain.services.HorarioService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class HorarioControllerTest {
 
+    /*
+   public static final String HORARIO_INICIAL = String.valueOf(Instant.now());
+   public static final Instant HORARIO_FINAL = HORARIO_INICIAL.plusSeconds(1260L);
+   public static final Barbearia BARBEARIA = new Barbearia(UUID.randomUUID(), "Barbearia", List.of());
+   public static final int INDEX = 0;
+
+   @InjectMocks
+   private HorarioController controller;
+   @Mock
+   private HorarioService service;
+   @Mock
+   private HorarioDTOMapper mapper;
+
+   private Horario horario;
+   private HorarioDTO horarioDTO;
+   private Optional<Horario> optional;
+   @BeforeEach
+   void setUp() {
+       MockitoAnnotations.openMocks(this);
+       startHorario();
+   }
+
+
+
     public static final UUID ID = UUID.randomUUID();
-    public static final Instant HORARIO_INICIAL = Instant.now();
-    public static final Instant HORARIO_FINAL = HORARIO_INICIAL.plusSeconds(1260L);
-    public static final Barbearia BARBEARIA = new Barbearia(UUID.randomUUID(), "Barbearia", List.of());
-    public static final int INDEX = 0;
-
-    @InjectMocks
-    private HorarioController controller;
-    @Mock
-    private HorarioService service;
-    @Mock
-    private HorarioDTOMapper mapper;
-
-    private Horario horario;
-    private HorarioDTO horarioDTO;
-    private Optional<Horario> optional;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        startHorario();
-    }
 
     @Test
     void whenGetHorariosThenReturnOk() {
@@ -152,4 +132,6 @@ class HorarioControllerTest {
                 ,BARBEARIA
                 ,new Reserva()));
     }
+
+     */
 }

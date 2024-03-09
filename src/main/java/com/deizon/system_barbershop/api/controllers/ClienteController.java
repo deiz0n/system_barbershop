@@ -38,7 +38,7 @@ public class ClienteController {
     @Transactional
     @PostMapping
     public ResponseEntity<ClienteDTO> createCliente(@RequestBody @Valid ClienteDTO newCliente) {
-        clienteService.addResource(newCliente);
+        var cliente = clienteService.addResource(newCliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCliente);
     }
 

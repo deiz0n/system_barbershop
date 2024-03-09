@@ -3,7 +3,6 @@ package com.deizon.system_barbershop.api.controllers;
 import com.deizon.system_barbershop.domain.dtos.HorarioDTO;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.services.HorarioService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

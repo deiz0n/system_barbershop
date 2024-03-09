@@ -13,8 +13,7 @@ public class HorarioDTOMapper implements Function<Horario, HorarioDTO> {
     public HorarioDTO apply(Horario horario) {
         return new HorarioDTO(
                 horario.getId(),
-                horario.getHorarioInicial(),
-                horario.getHorarioFinal(),
+                horario.getHorario(),
                 horario.getBarbearia()
         );
     }

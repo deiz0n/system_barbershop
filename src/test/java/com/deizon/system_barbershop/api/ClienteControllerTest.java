@@ -38,7 +38,6 @@ class ClienteControllerTest {
 
     public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Carlos Eduardo";
-    public static final String CPF = "14595214049";
     public static final String TELEFONE = "11940028922";
     public static final String EMAIL = "eduardo@gmail.com";
     public static final Reserva RESERVA = new Reserva(UUID.randomUUID(), new Cliente(), new Horario());
@@ -64,7 +63,6 @@ class ClienteControllerTest {
 
         assertEquals(ID, response.getBody().get(INDEX).getId());
         assertEquals(NOME, response.getBody().get(INDEX).getNome());
-        assertEquals(CPF, response.getBody().get(INDEX).getCpf());
         assertEquals(TELEFONE, response.getBody().get(INDEX).getTelefone());
         assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
         assertEquals(RESERVA, response.getBody().get(INDEX).getReservas().get(INDEX));
@@ -85,7 +83,6 @@ class ClienteControllerTest {
 
         assertEquals(ID, response.getBody().getId());
         assertEquals(NOME, response.getBody().getNome());
-        assertEquals(CPF, response.getBody().getCpf());
         assertEquals(TELEFONE, response.getBody().getTelefone());
         assertEquals(EMAIL, response.getBody().getEmail());
         assertEquals(RESERVA, response.getBody().getReservas().get(INDEX));
@@ -106,7 +103,6 @@ class ClienteControllerTest {
 
         assertEquals(ID, response.getBody().getId());
         assertEquals(NOME, response.getBody().getNome());
-        assertEquals(CPF, response.getBody().getCpf());
         assertEquals(TELEFONE, response.getBody().getTelefone());
         assertEquals(EMAIL, response.getBody().getEmail());
         assertEquals(RESERVA, response.getBody().getReservas().get(INDEX));
@@ -141,7 +137,6 @@ class ClienteControllerTest {
 
         assertEquals(ID, response.getBody().getId());
         assertEquals(NOME, response.getBody().getNome());
-        assertEquals(CPF, response.getBody().getCpf());
         assertEquals(TELEFONE, response.getBody().getTelefone());
         assertEquals(EMAIL, response.getBody().getEmail());
         assertEquals(RESERVA, response.getBody().getReservas().get(INDEX));
@@ -150,19 +145,16 @@ class ClienteControllerTest {
     private void startCliente() {
         cliente = new Cliente(ID
                 ,NOME
-                ,CPF
                 ,TELEFONE
                 ,EMAIL
                 , List.of(RESERVA));
         clienteDTO = new ClienteDTO(ID
                 ,NOME
-                ,CPF
                 ,TELEFONE
                 ,EMAIL
                 ,List.of(RESERVA));
         optional = Optional.of(new Cliente(ID
                 ,NOME
-                ,CPF
                 ,TELEFONE
                 ,EMAIL
                 ,List.of(RESERVA)));

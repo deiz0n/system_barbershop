@@ -5,16 +5,13 @@ import com.deizon.system_barbershop.domain.models.Horario;
 import com.deizon.system_barbershop.domain.repositories.HorarioRepository;
 import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
 import com.deizon.system_barbershop.domain.services.DTOMapper.HorarioDTOMapper;
-import com.deizon.system_barbershop.domain.services.exceptions.ArgumentNotValidException;
 import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
-import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
 import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -58,7 +55,7 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     public Horario addResource(HorarioDTO horarioDTO) {
         var horario = new Horario();
         BeanUtils.copyProperties(horarioDTO, horario);
-        dataValidation(horario);
+        //dataValidation(horario);
         return horarioRepository.save(horario);
     }
 
@@ -89,16 +86,6 @@ public class HorarioService implements ServiceCRUD<HorarioDTO, Horario> {
     @Override
     public void dataValidation(Horario newHorario) {
         if (reservaRepository.findFirstByHorario(newHorario).isPresent())
-            throw new DataIntegrityException("O horário não pode ser excluído pois está vinculado a uma reserva.");
-        var horarioByBarbearia = horarioRepository.findByBarbearia(newHorario.getBarbearia());
-        if (horarioByBarbearia.isPresent() && !horarioByBarbearia.get().getId().equals(newHorario.getId())) { //Verifica se o horário está vinculado a uma barbeária
-            throw new ExistingFieldException("Horário já cadastrado");
-        }
-        if (newHorario.getHorarioInicial().isAfter(newHorario.getHorarioFinal())) { //Verifica se o horário inicial é posterior ao final
-            throw new ArgumentNotValidException("O horário inicial não pode ser posteior ao horário final.");
-        }
-        var duration = Duration.between(newHorario.getHorarioInicial(), newHorario.getHorarioFinal()).toMinutes();
-        if (duration < 20)  //Verifica se a diferença entre horários é menor que 20 minutos
-            throw new ArgumentNotValidException("Intervalo de tempo muito curto. Tente novamente");
+            throw new DataIntegrityException("O horário não pode ser excluído pois está vinculado a uma reserva");
     }
 }

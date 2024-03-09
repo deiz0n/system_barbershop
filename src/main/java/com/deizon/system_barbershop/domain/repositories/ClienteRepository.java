@@ -9,14 +9,9 @@ import java.util.UUID;
 
 public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
-    ArrayList<Cliente> findAll();
-
-    Optional<Cliente> findFirstByCpf(String cpf);
-
+    //ArrayList<Cliente> findAll();
     Optional<Cliente> findFirstByTelefone(String telefone);
-
     Optional<Cliente> findFirstByEmail(String email);
-
-    ArrayList<String> getDataByReservas(UUID id);
+    //ArrayList<String> getDataByReservas(UUID id);
 
 }

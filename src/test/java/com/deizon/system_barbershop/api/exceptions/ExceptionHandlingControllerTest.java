@@ -1,7 +1,5 @@
 package com.deizon.system_barbershop.api.controllers.exceptions;
 
-import com.deizon.system_barbershop.api.controllers.exceptions.Error;
-import com.deizon.system_barbershop.api.controllers.exceptions.ExceptionHandlerController;
 import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.services.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +20,8 @@ import java.lang.reflect.Parameter;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

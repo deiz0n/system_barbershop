@@ -14,7 +14,6 @@ public class ClienteDTOMapper implements Function<Cliente, ClienteDTO> {
         return new ClienteDTO(
                 cliente.getId(),
                 cliente.getNome(),
-                cliente.getCpf(),
                 cliente.getTelefone(),
                 cliente.getEmail(),
                 cliente.getReservas()
