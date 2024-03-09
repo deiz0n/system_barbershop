@@ -48,7 +48,7 @@ public class ReservaController {
     @PostMapping
     public ResponseEntity<?> createReserva(@RequestBody @Valid ReservaDTO newReserva) {
         var reserva = reservaService.addResource(newReserva);
-        emailService.sendEmail(reserva.getId(), new Email());
+        //emailService.sendEmail(reserva.getId(), new Email());
         return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
     }
     

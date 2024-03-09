@@ -27,6 +27,7 @@ public class Reserva {
     @ManyToOne
     private Cliente cliente;
 
+    @JsonIgnore
     @OneToOne
     private Horario horario;
 }

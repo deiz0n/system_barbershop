@@ -26,7 +26,6 @@ public class ClienteDTO {
     @Size(min = 11, message = "Número de telefone inválido, o número precisa ter ao menos 11 digitos")
     private String telefone;
     @Email(message = "E-mail inválido. Tente novamente!")
-    @NotBlank(message = "Esse campo não pode ficar em branco")
     private String email;
     private List<Reserva> reservas;
 
