@@ -1,31 +1,8 @@
 package com.deizon.system_barbershop.domain.services;
 
-import com.deizon.system_barbershop.domain.dtos.ClienteDTO;
-import com.deizon.system_barbershop.domain.models.Cliente;
-import com.deizon.system_barbershop.domain.models.Horario;
-import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.repositories.ClienteRepository;
-import com.deizon.system_barbershop.domain.repositories.ReservaRepository;
-import com.deizon.system_barbershop.domain.services.DTOMapper.ClienteDTOMapper;
-import com.deizon.system_barbershop.domain.services.exceptions.DataIntegrityException;
-import com.deizon.system_barbershop.domain.services.exceptions.ExistingFieldException;
-import com.deizon.system_barbershop.domain.services.exceptions.ResourceNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ClienteServiceTest {

@@ -13,9 +13,10 @@ public class ReservaDTOMapper implements Function<Reserva, ReservaDTO> {
     public ReservaDTO apply(Reserva reserva) {
         return new ReservaDTO(
                 reserva.getId(),
-                reserva.getCliente(),
                 reserva.getHorario(),
+                reserva.getNomeCliente(),
+                reserva.getTelefoneCliente(),
                 reserva.getStatus()
-        );
+                );
     }
 }

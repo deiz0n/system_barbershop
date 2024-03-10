@@ -1,7 +1,6 @@
 package com.deizon.system_barbershop.domain.dtos;
 
 import com.deizon.system_barbershop.domain.enums.StatusReserva;
-import com.deizon.system_barbershop.domain.models.Cliente;
 import com.deizon.system_barbershop.domain.models.Horario;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -19,8 +18,9 @@ public class ReservaDTO {
 
     @EqualsAndHashCode.Include
     private UUID id;
-    private Cliente cliente;
     private Horario horario;
+    private String nomeCliente;
+    private String telefoneCliente;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private StatusReserva status;
 

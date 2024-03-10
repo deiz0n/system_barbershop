@@ -22,10 +22,8 @@ public class Reserva {
     @EqualsAndHashCode.Include
     private UUID id;
     private StatusReserva status;
-
-    @JsonIgnore
-    @ManyToOne
-    private Cliente cliente;
+    private String nomeCliente;
+    private String telefoneCliente;
 
     @JsonIgnore
     @OneToOne

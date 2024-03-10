@@ -1,9 +1,7 @@
 package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
-import com.deizon.system_barbershop.domain.models.Email;
 import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.services.EmailService;
 import com.deizon.system_barbershop.domain.services.ReservaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +19,10 @@ public class ReservaController {
 
     private ReservaService reservaService;
 
-    private EmailService emailService;
 
     @Autowired
-    public ReservaController(ReservaService reservaService, EmailService emailService) {
+    public ReservaController(ReservaService reservaService) {
         this.reservaService = reservaService;
-        this.emailService = emailService;
     }
 
     //Retonar todas as reservas

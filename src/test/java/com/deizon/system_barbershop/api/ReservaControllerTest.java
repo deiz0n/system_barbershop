@@ -1,31 +1,10 @@
 package com.deizon.system_barbershop.api;
 
-import com.deizon.system_barbershop.api.controllers.ReservaController;
-import com.deizon.system_barbershop.domain.dtos.ReservaDTO;
-import com.deizon.system_barbershop.domain.models.Barbearia;
-import com.deizon.system_barbershop.domain.models.Cliente;
-import com.deizon.system_barbershop.domain.models.Horario;
-import com.deizon.system_barbershop.domain.models.Reserva;
-import com.deizon.system_barbershop.domain.services.EmailService;
-import com.deizon.system_barbershop.domain.services.ReservaService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ReservaControllerTest {

@@ -9,12 +9,6 @@
             </query>
         </named-query>
 
-    
-        <named-query name="Cliente.findAll">
-            <query>
-                FROM tb_cliente c LEFT JOIN FETCH c.reservas
-            </query>
-        </named-query>
 
 
 </entity-mappings>
