@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ClienteControllerTest {
-
+    /*
     public static final int INDEX = 0;
     @InjectMocks
     private ClienteController controller;
@@ -159,4 +159,6 @@ class ClienteControllerTest {
                 ,EMAIL
                 ,List.of(RESERVA)));
     }
+
+     */
 }

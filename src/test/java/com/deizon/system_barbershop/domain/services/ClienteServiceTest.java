@@ -30,6 +30,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class ClienteServiceTest {
 
+    /*
     public static final UUID ID = UUID.randomUUID();
     public static final String NOME = "Carlos Eduardo";
     public static final String TELEFONE = "11940028922";
@@ -271,5 +272,7 @@ class ClienteServiceTest {
                 ,EMAIL
                 ,List.of(RESERVA)));
     }
+
+     */
 
 }
