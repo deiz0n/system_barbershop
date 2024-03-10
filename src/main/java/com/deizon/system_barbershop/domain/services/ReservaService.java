@@ -38,6 +38,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         return reservas;
     }
 
+
     //Retorna a reserva comforme id
     @Override
     public ReservaDTO findByID(UUID id) {
@@ -78,11 +79,18 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
         }
     }
 
+    //Atualiza os status de determinada reserva
+    public Reserva updateDataResource(UUID id, ReservaDTO newReserva) {
+        var reserva = reservaRepository.getReferenceById(id);
+        reserva.setStatus(newReserva.getStatus());
+        return reservaRepository.save(reserva);
+    }
+
     //Verifica se os dados inseridos são válidos
     @Override
     public void dataValidation(Reserva newReserva) {
         var reservaByHorario = reservaRepository.findFirstByHorario(newReserva.getHorario());
-        if (reservaByHorario.isPresent())
+        if (reservaByHorario.isPresent() && !reservaByHorario.get().getId().equals(newReserva.getId()))
             throw new DataIntegrityException("O horário já está vinculado a uma reserva");
     }
 }

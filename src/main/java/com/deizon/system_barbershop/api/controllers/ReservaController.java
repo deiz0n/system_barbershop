@@ -67,4 +67,11 @@ public class ReservaController {
         var reserva = reservaService.updateResource(id, newReserva);
         return ResponseEntity.ok().body(reserva);
     }
+
+    @Transactional
+    @PatchMapping("/{id}")
+    public ResponseEntity<Reserva> updateStatusReserva(@PathVariable UUID id, @RequestBody ReservaDTO newReserva) {
+        var reserva = reservaService.updateResource(id, newReserva);
+        return ResponseEntity.ok().body(reserva);
+    }
 }
