@@ -23,4 +23,5 @@ public class BarbeariaDTO {
     private String nome;
     @JsonIgnore
     private List<Horario> horarios;
+    private String email;
 }
