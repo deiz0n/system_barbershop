@@ -38,12 +38,16 @@ public class BarbeariaService implements ServiceCRUD<BarbeariaDTO, Barbearia> {
         return barbearias;
     }
 
-    //Lista uma barbeária comforme id
+    //Lista uma barbeária conforme id
     @Override
     public BarbeariaDTO findByID(UUID id) {
         var barbearia = barbeariaRepository.findById(id)
                 .map(barbeariaDTOMapper);
         return barbearia.orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
+    public Barbearia findByEmail(String email) {
+        return barbeariaRepository.findFirstByEmail(email).get();
     }
 
     //Adiciona uma barbeária

@@ -22,6 +22,7 @@ public class Barbearia {
     @EqualsAndHashCode.Include
     private UUID id;
     private String nome;
+    private String email;
 
 //    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
 //    @Setter(AccessLevel.NONE)

@@ -2,6 +2,7 @@ package com.deizon.system_barbershop.api.controllers;
 
 import com.deizon.system_barbershop.domain.dtos.BarbeariaDTO;
 import com.deizon.system_barbershop.domain.models.Barbearia;
+import com.deizon.system_barbershop.domain.models.Reserva;
 import com.deizon.system_barbershop.domain.services.BarbeariaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,12 @@ public class BarbeariaController {
     public ResponseEntity<BarbeariaDTO> getBarbearia(@PathVariable UUID id) {
         var barbearia = barbeariaService.findByID(id);
         return ResponseEntity.ok().body(barbearia);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<Barbearia> getBarbeariaByEmail(@PathVariable String email) {
+        var obj = barbeariaService.findByEmail(email);
+        return ResponseEntity.ok().body(obj);
     }
 
     //Cria uma nova barbeária
