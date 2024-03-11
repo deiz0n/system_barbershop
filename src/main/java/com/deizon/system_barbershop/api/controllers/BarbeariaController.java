@@ -39,7 +39,7 @@ public class BarbeariaController {
         return ResponseEntity.ok().body(barbearia);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("find/{email}")
     public ResponseEntity<Barbearia> getBarbeariaByEmail(@PathVariable String email) {
         var obj = barbeariaService.findByEmail(email);
         return ResponseEntity.ok().body(obj);
