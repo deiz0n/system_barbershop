@@ -1,6 +1,7 @@
 package com.deizon.system_barbershop.domain.dtos;
 
 import com.deizon.system_barbershop.domain.models.Barbearia;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class HorarioDTO {
 
     @EqualsAndHashCode.Include
     private UUID id;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime horario;
     private Barbearia barbearia;
 }
