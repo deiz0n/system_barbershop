@@ -58,13 +58,6 @@ public class ReservaController {
     //Atualiza os dados da reserva comforme id
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<Reserva> updateReserva(@PathVariable UUID id, @RequestBody @Valid ReservaDTO newReserva) {
-        var reserva = reservaService.updateResource(id, newReserva);
-        return ResponseEntity.ok().body(reserva);
-    }
-
-    @Transactional
-    @PutMapping("/{id}")
     public ResponseEntity<Reserva> updateStatusReserva(@PathVariable UUID id, @RequestBody @Valid ReservaDTO newReserva) {
         var reserva = reservaService.updateDataResource(id, newReserva);
         return ResponseEntity.ok().body(reserva);
