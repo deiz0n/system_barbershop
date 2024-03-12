@@ -83,6 +83,7 @@ public class ReservaService implements ServiceCRUD<ReservaDTO, Reserva>{
     public Reserva updateDataResource(UUID id, ReservaDTO newReserva) {
         var reserva = reservaRepository.getReferenceById(id);
         reserva.setStatus(newReserva.getStatus());
+        reserva.setStatus(StatusReserva.CONFIRMADO);
         return reservaRepository.save(reserva);
     }
 
